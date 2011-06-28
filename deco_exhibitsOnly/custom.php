@@ -176,7 +176,7 @@ function deco_exhibit_builder_display_random_featured_exhibit()
 } } 
 
 //pulls featured exhibits and one image for use in slideshow
-//see README file before trying to reuse (requires plugin hack)
+//plenty of room for improvement here...
 //see deco_display_image_gallery() for required html layout
 function deco_display_exhibit_gallery(){
 		$nogallery=get_theme_option('Featured Exhibits Gallery');
