@@ -4,16 +4,6 @@
 // designed for portability across themes should be grouped into a plugin whenever
 // possible.
 
-add_filter(array('Display', 'Item', 'Dublin Core', 'Title'), 'show_untitled_items');
-// Remove all whitespace and formatting before checking to see if the title is empty -- via Berlin theme
-function show_untitled_items($title)
-{
-    $prepTitle = trim(strip_formatting($title));
-    if (empty($prepTitle)) {
-        return '[Untitled]';
-    }
-    return $title;
-}
 
 /**
  * Custom function to retrieve any number of random featured items.

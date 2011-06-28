@@ -22,7 +22,7 @@ queue_css('video-js');
 queue_css('print'); 
 display_css();
 ?>
-<!-- Get the Configurable stylesheet -->
+<!-- Get the Custom stylesheet -->
 <link rel="stylesheet" media="screen" href="<?php echo html_escape(css(deco_get_stylesheet())); ?>" />
 
 

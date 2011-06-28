@@ -1,10 +1,12 @@
 <?php 
+	if (get_theme_option('Redirect Imported Items to Source')=='yes')
 	//only logged in users may view external items
 	//redirects item/show links to original source 
-	//after testing for a URL in the Relations field 
+	//after testing for a URL in either the Relation or Source field 
 	$user = Omeka_Context::getInstance()->getCurrentUser();
 	$authenticated =('super'||'admin'||'contributor'||'researcher');
-	$externalSource = item('Dublin Core', 'Relation');
+	$redirectbyelement= get_theme_option('Choose Redirect Element');
+	$externalSource = item('Dublin Core', $redirectbyelement);
 	if((stristr($externalSource, 'http://') == true)&&($user->role != $authenticated)):
 	header('Location:'.$externalSource.'');
 	?>

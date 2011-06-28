@@ -4,15 +4,63 @@
 // designed for portability across themes should be grouped into a plugin whenever
 // possible.
 
-add_filter(array('Display', 'Item', 'Dublin Core', 'Title'), 'show_untitled_items');
-// Remove all whitespace and formatting before checking to see if the title is empty -- via Berlin theme
-function show_untitled_items($title)
+
+/*
+filtering ExhibitBuilder functions to enable fancy tooltips 
+*/
+add_filter('exhibit_builder_exhibit_display_item','deco_exhibit_builder_exhibit_display_item');
+add_filter('exhibit_builder_display_exhibit_thumbnail_gallery','deco_exhibit_builder_display_exhibit_thumbnail_gallery');
+
+function deco_exhibit_builder_display_exhibit_thumbnail_gallery($html, $start, $end, $props = array(), $thumbnailType = 'square_thumbnail')
 {
-    $prepTitle = trim(strip_formatting($title));
-    if (empty($prepTitle)) {
-        return '[Untitled]';
+    $html = '';
+    for ($i=(int)$start; $i <= (int)$end; $i++) { 
+        if (exhibit_builder_use_exhibit_page_item($i)) {    
+            $html .= "\n" . '<div class="exhibit-item">';
+            $title='<h3>'.item('Dublin Core', 'Title',array('snippet'=>80), $item).'</h3><p>'.item('Dublin Core', 'Description',array('snippet'=>240)).'<br/><a href="'.item('permalink').'"target="_blank">View Full Record</a></p>';
+            $thumbnail = item_image($thumbnailType, array('title'=>$title));
+            $html .= exhibit_builder_link_to_exhibit_item($thumbnail);
+            $html .= exhibit_builder_exhibit_display_caption($i);
+            $html .= '</div>' . "\n";
+        }
     }
-    return $title;
+    return $html;
+}
+
+function deco_exhibit_builder_exhibit_display_item($html,$displayFilesOptions = array(), $linkProperties = array(), $item = null)
+{
+    if (!$item) {
+        $item = get_current_item();
+    }
+    
+    // Always just display the first file (may change this in future).
+    $fileIndex = 0;
+    
+    // Default link href points to the exhibit item page.
+    if (!isset($displayFilesOptions['linkAttributes']['href'])) {
+        $displayFilesOptions['linkAttributes']['href'] = exhibit_builder_exhibit_item_uri($item);
+    }
+    
+    // Default alt text is the
+    if(!isset($displayFileOptions['imgAttributes']['alt'])) {
+        $displayFilesOptions['imgAttributes']['alt'] = item('Dublin Core', 'Title', array(), $item);
+    }
+    // Default title text is the
+    if(!isset($displayFileOptions['imgAttributes']['title'])) {
+    	$title='<h3>'.item('Dublin Core', 'Title', array('snippet'=>80), $item).'</h3><p>'.item('Dublin Core', 'Description',array('snippet'=>240)).'<br/><a href="'.item('permalink').'"target="_blank">View Full Record</a></p>';
+        $displayFilesOptions['imgAttributes']['title'] = $title;
+    }
+    
+    // Pass null as the 3rd arg so that it doesn't output the item-file div.
+    $fileWrapperClass = null;
+    $file = $item->Files[$fileIndex];
+    if ($file) {
+        $html = display_file($file, $displayFilesOptions, $fileWrapperClass);
+    } else {
+        $html = exhibit_builder_link_to_exhibit_item(null, $linkProperties, $item);
+    }
+    
+    return $html;
 }
 
 /**
@@ -49,22 +97,24 @@ function deco_get_random_featured_items($num = '10', $withImage = true)
     return $items;
 }
 
-// initialize Awkward Gallery on homepage
-// AwkwardGallery is jQuery and must use HTML that looks like this...
-//
-// <div id="showcase" class="showcase">
-//	<div>
-//		<img src="IMAGE.JPG" alt="IMAGE" />
-//		<div class="showcase-thumbnail">
-//			<img src="IMAGE.JPG" alt="IMAGE" width="140px" />
-//			<div class="showcase-thumbnail-caption">THUMB CAPTION</div>
-//			<div class="showcase-thumbnail-cover"></div>
-//		</div>
-//		<div class="showcase-caption">
-//			<a href=""><h3>OVERLAY TITLE</h3></a><br/><p>OVERLAY DESCRIPTION</p>
-//		</div>
-//	</div>
-// </div>
+/*
+ initialize Awkward Gallery on homepage
+ AwkwardGallery is jQuery and must use HTML that looks like this...
+
+ <div id="showcase" class="showcase">
+	<div>
+		<img src="IMAGE.JPG" alt="IMAGE" />
+		<div class="showcase-thumbnail">
+			<img src="IMAGE.JPG" alt="IMAGE" width="140px" />
+			<div class="showcase-thumbnail-caption">THUMB CAPTION</div>
+			<div class="showcase-thumbnail-cover"></div>
+		</div>
+		<div class="showcase-caption">
+			<a href=""><h3>OVERLAY TITLE</h3></a><br/><p>OVERLAY DESCRIPTION</p>
+		</div>
+	</div>
+ </div>
+*/
 
 function deco_display_image_gallery(){
 		//this loops the most recent featured items
@@ -124,36 +174,37 @@ function deco_exhibit_builder_display_random_featured_exhibit()
     $html .= '</div>';
     return $html;
 } } 
-//this function is used in deco_display_exhibit_gallery()
-function deco_default_exhibit_array(){
-            $fallbacks=get_db()->getTable('Exhibit')->findBy(array('recent'=>true,'featured'=>true),10);
-            foreach($fallbacks as $fallback){
-            return $fallback->id.',';
-            }
-}
+
 //pulls featured exhibits and one image for use in slideshow
 //see README file before trying to reuse (requires plugin hack)
+//see deco_display_image_gallery() for required html layout
 function deco_display_exhibit_gallery(){
-		$fallback=deco_default_exhibit_array();
-		$exhibits_array= (get_theme_option('Featured Exhibit Array')!=null) ? get_theme_option('Featured Exhibit Array'):$fallback; // preference is given to the array set in theme options, which overrides author-set 'featured' status
+		$nogallery=get_theme_option('Featured Exhibits Gallery');
+		if($nogallery == 'yes'){
+		if (get_theme_option('Featured Exhibit Array')!=null) {
+		$exhibits_array=get_theme_option('Featured Exhibit Array'); 
 		$exploded = explode(',', $exhibits_array);//converts $exhibits_array from string to actual array
 		$featured_exhibits = $exploded; 
 		foreach($featured_exhibits as $featured_exhibit){
 		$exhibit = exhibit_builder_get_exhibit_by_id($featured_exhibit);
-		$items = get_items(array('exhibit' => $featured_exhibit),1);
-		if ($items!=null) //todo: make sure that the item also is an image (non-image will probably break function)
+		$item = get_items(array('exhibit' => $featured_exhibit),1);
+		if ($item!=null) 
 		{
-		set_items_for_loop($items);
+		set_items_for_loop($item);
 		while(loop_items()):
 		//get exhibit item
 			$index = 0; 
 			while ($file = loop_files_for_item()):
-			    if ($file->hasThumbnail()):
+			    if ($file->hasThumbnail()){
 			    //this makes sure the loop grabs only the first image for the exhibit item 
 			        if ($index == 0): 
 		    	       echo '<div><img src="'.$file->getWebPath('fullsize').'"/>'; 
 		    	    endif;
-			    endif; 
+			    }
+			    else{
+			    //if no image, use placeholder
+			    echo '<div><img src="'.uri('').'/themes/deco_exhibitsOnly/images/vid-poster.jpg" alt="Oops! This exhibit has no preview image" />';
+			    } 
 			endwhile;
 		endwhile; 
 		echo '<div class="showcase-caption">';
@@ -163,14 +214,27 @@ function deco_display_exhibit_gallery(){
 		}
 		else 
 			{
-			//Exhibit with no files
+			//Exhibit with no item files
         	echo'<div><img src="'.uri('').'/themes/deco_exhibitsOnly/images/vid-poster.jpg" alt="Oops! This exhibit has no preview image" />
         	<div class="showcase-caption">
         	<h3>'.exhibit_builder_link_to_exhibit($exhibit,$exhibit->title).'</h3>
         	<p>'.snippet($exhibit->description, 0, 300,exhibit_builder_link_to_exhibit($exhibit, '<br/>...more')).'</p></div></div>';
     		}
     	}
+    	}
+    	else{
+			//Exhibit array not set
+        	echo'<div><img src="'.uri('').'/themes/deco_exhibitsOnly/images/vid-poster.jpg" alt="Oops! No featured Exhibits" />
+        	<div class="showcase-caption">
+        	<h3>Uh Oh!</h3>
+        	<p>You haven\'t set any featured exhibits yet. Go to theme options and enter the exhibit IDs to use in the featured exhibits slideshow, or disable the slideshow altogether.</p></div></div>';    	
+    	}}
+    	else{
+    	//style tweak for no gallery
+    	echo'<style type=text/css>#primary{background:#fff; -moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}#showcase{display:none; visibility:hidden collapse;}</style>';
+    	}
     }
+    
 
 //Returns Recent Exhibit for display on homepage
 function deco_exhibit_builder_display_recent_exhibit($num=3)
