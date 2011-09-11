@@ -19,6 +19,9 @@ display_css();
 ?>
 <!-- Get the Configurable stylesheet -->
 <link rel="stylesheet" media="screen" href="<?php echo html_escape(css(deco_get_stylesheet())); ?>" />
+<!-- get fancy fonts via Google Fonts API if the theme is "Wood" -->
+<?php if (deco_get_stylesheet()=='wood'){echo'<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster|Cuprum">';}
+?>
 
 
 <!-- JavaScripts -->
