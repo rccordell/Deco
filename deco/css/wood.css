@@ -1,20 +1,20 @@
 /* Configurable: These are the styles that change when you switch stylesheets == These are the wood.css settings */
 
-/*Styles below are using the Wood settings and fonts from Google Fonts (see also: header.php). */
+/*Styles below are using the Wood settings and fonts from Google Fonts (see also: header.php, where the 2 custom fonts are included. You can change them there first and use them here...). */
 
 body{background: url('../images/wood.jpg') 0 0 fixed repeat  #FBFAF1;}
 #primary-nav{background:transparent;}
 #footer {background:transparent;text-shadow: 0 -1px 1px #000;}
 #content{border-color: #ccc;border-width: 1px}
 
-#site-title a {color:#333; font-family: 'Lobster';text-shadow: 0 -1px 1px #eaeaea;text-transform: capitalize;}
+#site-title a {color:#333; font-family: 'Lobster';text-shadow: 0 -1px 1px #eaeaea;text-transform: capitalize;-webkit-text-stroke: 1px transparent}
 #site-description h3 {color:#333; font-family: 'Lobster';text-shadow: 0 -1px 1px #fff;}
-h1, h2, h1 a, h2 a, h3, h3 a:link, .hTagcloud a{color:#333; font-family: 'Cuprum';text-shadow: 0 -1px 1px #eaeaea;}
+h1, h2, h1 a, h2 a, h3, h3 a:link, .hTagcloud a{color:#333; font-family: 'Cuprum';text-shadow: 0 -1px 1px #eaeaea;font-weight: normal;-webkit-text-stroke: 1px transparent}
 
 #primary-nav a {
     color: #FFFFFF;
     text-shadow: 0 -1px 1px #555;
-    font-size: 1.1em;
+    font-size: 1.2em;
 }
 
 #footer {
@@ -42,3 +42,19 @@ div#site-description{
 -moz-box-shadow: 0 0 5px #999999 inset;
 box-shadow: 0 0 5px #999999 inset;
 }
+
+div.showcase-caption{
+-webkit-box-shadow: 0 0 5px #999999 inset;
+-moz-box-shadow: 0 0 5px #999999 inset;
+box-shadow: 0 0 5px #999999 inset;
+}
+
+#search-container input {
+    background: url('../images/search.gif') 95% 50% no-repeat  #FAFAFA;
+    border: 0px none transparent;
+    border-radius: 10px;
+    box-shadow: 0 0 1px #000000 inset;
+    padding-left:10px;
+    
+}
+#search-container #submit_search{display: none; visibility: hidden collapse;}

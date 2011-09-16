@@ -13,14 +13,6 @@
             
         </div><!--end About-->
 	<!-- Featured Item -->
-	
-
-
-
-<!-- this hides the slideshow divs from users who do not have javascript enabled so they don't see a big mess -->
-<noscript>
-<style type="text/css">#showcase,.showcase, h2.awkward{display:none; visibility:hidden;}</style>
-</noscript>
 
 <!-- Start Awkward Gallery load/config -->
 <script type="text/javascript">
@@ -65,7 +57,7 @@ jQuery(document).ready(function()
  		</div><!-- end featured items -->
 	
         <!-- Featured Exhibit -->
-        <div id="featured-exhibit" style="margin-top:1.5em;">
+        <div id="featured-exhibits" style="margin-top:1.5em;">
             <?php echo deco_exhibit_builder_display_random_featured_exhibit(); ?>
         </div><!-- end featured collection -->
         

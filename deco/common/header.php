@@ -1,35 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title><?php echo settings('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
 
 <!-- Meta -->
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="<?php echo settings('description'); ?>" />
 
 <?php echo auto_discovery_link_tag(); ?>
 
 <!-- Get Core stylesheets -->
+
 <?php echo queue_css('screen');
 queue_css('jquery.fancybox-1.3.4');
 queue_css('video-js');
 queue_css('print'); 
 display_css();
 ?>
+
 <!-- Get the Configurable stylesheet -->
+
 <link rel="stylesheet" media="screen" href="<?php echo html_escape(css(deco_get_stylesheet())); ?>" />
+
 <!-- get fancy fonts via Google Fonts API if the theme is "Wood" -->
-<?php if (deco_get_stylesheet()=='wood'){echo'<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster|Cuprum">';}
+
+<?php if (deco_get_stylesheet()=='wood'){echo'<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster|Cuprum"/>';}
 ?>
 
 
 <!-- JavaScripts -->
+
 <?php echo js('default'); ?>
 
 <!-- start Conditional JS -->
 
 <!-- the following scripts only load on the homepage and items pages due to potential plugin conflicts (incl. current version of MyOmeka).  If you would like to use the slideshow or fancybox on another page, add the bodyid for each page below, separated by the or operator (||) -->
+
 	<?php if ($bodyid==("home"||"items")){
 	echo js('fancybox/jquery.fancybox-1.3.4');
 	echo js('fancybox/jquery.easing-1.3.pack');
@@ -41,7 +48,13 @@ display_css();
 <!-- end Conditional JS -->
 
 <!-- Plugin Stuff -->
+
 <?php echo plugin_header(); ?>
+
+<!-- this hides the slideshow divs from users who do not have javascript enabled so they don't see a big mess -->
+<noscript>
+<style>#showcase,.showcase, h2.awkward{display:none; visibility:hidden;}</style>
+</noscript>
 
 </head>
 <body<?php echo $bodyid ? ' id="'.$bodyid.'"' : ''; ?><?php echo $bodyclass ? ' class="'.$bodyclass.'"' : ''; ?>>

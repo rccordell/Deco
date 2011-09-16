@@ -78,7 +78,7 @@
 	//the first item with square thumbs for the rest.  Images are grouped into galleries with the rel
 	//fancy_group and interact with FancyBox via the class fancy_item 	
 		if (($file->hasThumbnail()&&($index == 0))) 
-		echo 'Click the image to launch gallery view'.display_file($file, array('imageSize'=>'fullsize','linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => item('Dublin Core', 'Title'))),array('class' => 'fullsize', 'id' => 'item-image ')); 
+		echo 'Click the image to launch gallery view'.display_file($file, array('imageSize'=>'fullsize','linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => item('Dublin Core', 'Title'))),array('class' => 'fullsize', 'id' => 'item-image')); 
 		elseif (($file->hasThumbnail()&&($index !== 0))) 
 		echo display_file($file, array('imageSize'=>'square_thumbnail', 'linkToFile'=>true,'linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => item('Dublin Core', 'Title'))),array('class' => 'square_thumbnail')); 
 	//this is testing for rich media files and deciding what to do with them.	

@@ -12,9 +12,9 @@
                       <?php echo '<div id="collectors" class="element">';?>
        				  <?php echo'<h2>Collector(s)</h2>';?> 
        				  <?php echo '<div class="element-text">';?>
-          			  <?php echo '<ul><li>';?>
-              		  <?php echo '<p>'.collection('Collectors', array('delimiter'=>'</li><li>')); ?>
-					  <?php echo'</li></ul></p>';?>
+          			  <?php echo '<ul><li><p>';?>
+              		  <?php echo ''.collection('Collectors', array('delimiter'=>'</li><li>')); ?>
+					  <?php echo'</p></li></ul>';?>
         			  <?php echo'</div></div>';?>
                 <?php endif; ?>
 

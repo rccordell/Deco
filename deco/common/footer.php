@@ -6,12 +6,12 @@
 	<?php if (function_exists('my_omeka_user_status')) { echo '<div id="myomeka-status" style="float: right;">'.my_omeka_user_status().'</div>';}?>
 
     <p>&copy; <?php echo date(Y);?> <?php echo html_escape(settings('author'));?>
-    <br/>Proudly powered by <a href="http://omeka.org">Omeka</a><?php echo deco_display_theme_credit();?>
+    <br/>Proudly powered by <a href="http://omeka.org">Omeka</a><?php echo deco_display_theme_credit();?></p>
 
     <br/><ul class="navigation">
 		<?php echo public_nav_main(array('Home' => uri(''), 'Browse Items' => uri('items'), 'Browse Collections'=>uri('collections')));?>
     </ul>
-	</p>
+	
 </div><!-- end footer -->
 </div><!-- end wrap -->
 </body>

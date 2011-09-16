@@ -70,9 +70,7 @@ function deco_display_awkward_gallery(){
 			    //this makes sure the loop grabs only the first image for the item 
 			        if ($index == 0): 
 			           //item_file('fullsize uri') broke in Omeka version 1.3, so I use getWebPath instead...
-		    	       echo '<div><img src="'.$file->getWebPath('fullsize').'"/>'; 
-		    	       //uncomment the next line, restyle & activate thumbs in script config to use thumbnails for gallery nav
-		    	       //echo '<div class="showcase-thumbnail"><img src="'.item_file('square thumbnail uri').'"/><div class="showcase-thumbnail-caption">'.item('Dublin Core', 'Title').'</div><div class="showcase-thumbnail-cover"></div></div>'; 
+		    	       echo '<div><img src="'.$file->getWebPath('fullsize').'" alt="" title=""/>'; 
 		    	    endif;
 			    endif; 
 			endwhile;
