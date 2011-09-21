@@ -5,7 +5,7 @@
 body{background: none #fff;}
 #primary-nav{background:#555;}
 #footer {background:#555;}
-#content{border-color: #ccc;border-width: 1px}
+#content{border-color: #ccc;border-width: 1px; }
 
 #site-title, #content{
 opacity:1; 

@@ -2,7 +2,7 @@
 
 /*Styles below are using the Wood settings and fonts from Google Fonts (see also: header.php, where the 2 custom fonts are included. You can change them there first and use them here...). */
 
-body{background: url('../images/wood.jpg') 0 0 fixed repeat  #FBFAF1;}
+body{background: url('../images/wood.jpg') 0 0 fixed repeat #333;}
 #primary-nav{background:transparent;}
 #footer {background:transparent;text-shadow: 0 -1px 1px #000;}
 #content{border-color: #ccc;border-width: 1px}
