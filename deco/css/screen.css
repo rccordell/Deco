@@ -295,8 +295,8 @@ margin-top: 30px;}
 	/* General */
 
 	
-	#pagination-top {}
-	#pagination-bottom {}
+	#pagination-top {clear:both}
+	#pagination-bottom {clear:both}
 		
 	/* Navigation */
 	#primary-nav {}
