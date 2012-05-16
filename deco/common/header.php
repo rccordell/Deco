@@ -31,21 +31,31 @@ display_css();
 
 <!-- JavaScripts -->
 
-<?php echo js('default'); ?>
+<?php
 
-<!-- start Conditional JS -->
+/**
+ * Start Conditional JS
+ *
+ * The following scripts only load on the homepage and items pages due to
+ * potential plugin conflicts (incl. current version of MyOmeka).  If you would
+ * like to use the slideshow or fancybox on another page, add the bodyid for
+ * each page below, separated by the or operator (||).
+ */
+if ($bodyid==("home"||"items")){
 
-<!-- the following scripts only load on the homepage and items pages due to potential plugin conflicts (incl. current version of MyOmeka).  If you would like to use the slideshow or fancybox on another page, add the bodyid for each page below, separated by the or operator (||) -->
+    queue_js(
+        array(
+            'fancybox/jquery.fancybox-1.3.4',
+            'fancybox/jquery.easing-1.3.pack',
+            'video-js/video',
+            'jquery.aw-showcase'
+        )
+    );
 
-	<?php if ($bodyid==("home"||"items")){
-	echo js('fancybox/jquery.fancybox-1.3.4');
-	echo js('fancybox/jquery.easing-1.3.pack');
-	echo js('video-js/video');
-	echo js('jquery.aw-showcase');
-	}?>
+}
 
-
-<!-- end Conditional JS -->
+display_js();
+?>
 
 <!-- Plugin Stuff -->
 
