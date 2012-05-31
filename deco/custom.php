@@ -4,6 +4,32 @@
 // designed for portability across themes should be grouped into a plugin whenever
 // possible.
 
+function deco_custom_navigation(){
+
+    if ($customHeaderNavigation = get_theme_option('Navigation Array')) {
+        $navArray = array();
+        $customLinkPairs = explode("\n", $customHeaderNavigation);
+        foreach ($customLinkPairs as $pair) {
+            $pair = trim($pair);
+            if ($pair != '') {
+                $pairArray = explode('|', $pair, 2);
+                if (count($pairArray) == 2) {
+                    $link = trim($pairArray[0]);
+                    $url = trim($pairArray[1]);
+                    if (strncmp($url, 'http://', 7) && strncmp($url, 'https://', 8)){
+                        $url = uri($url);
+                    }
+                }
+                $navArray[$link] = $url;
+            }
+        }
+        return nav($navArray);
+    } else {
+        $navArray = array('Home' => uri(''), 'Items' => uri('items'), 'Collections'=>uri('collections'));
+        return public_nav($navArray);
+    }	
+	
+}
 
 /**
  * Custom function to retrieve any number of random featured items.
@@ -62,29 +88,28 @@ function deco_display_awkward_gallery(){
 		if ($items!=null) 
 		{
 		set_items_for_loop($items);
-		while(loop_items()):
-	
-			$index = 0; 
+		while(loop_items()): 
+		$filecount = 0;
+		$imagecount = 0;		
 			while ($file = loop_files_for_item()):
 			    if ($file->hasThumbnail()):
 			    //this makes sure the loop grabs only the first image for the item 
-			        if ($index == 0): 
-			           //item_file('fullsize uri') broke in Omeka version 1.3, so I use getWebPath instead...
+			        if ( ($imagecount == 0) && ($filecount == 0) ): 
 		    	       echo '<div><img src="'.$file->getWebPath('fullsize').'" alt="" title=""/>'; 
-		    	    endif;
-			    endif; 
-			endwhile;
-			
-			echo '<div class="showcase-caption">';
-			echo /*Item Title and Link*/'<h3>'.link_to_item().'</h3>';
-			echo /*Item Description Excerpt*/'<p>'.item('Dublin Core', 'Description',array('snippet'=>190));
-			echo /*Link to Item*/ link_to_item(' ...more ').'</p></div></div>';
-			
-			endwhile; 
-}else 
-			{
+		    	       echo '<div class="showcase-caption">';
+		    	       echo /*Item Title and Link*/'<h3>'.link_to_item().'</h3>';
+		    	       echo /*Item Description Excerpt*/'<p>'.item('Dublin Core', 'Description',array('snippet'=>190));
+		    	       echo /*Link to Item*/ link_to_item(' ...more ').'</p></div></div>'; 
+				 	endif;
+				 	$imagecount++; 
+				 endif; 
+				 $filecount++;
+			endwhile;	
+		endwhile; 
+		}else{
         	echo'<div><img src="'.uri('').'/themes/deco/images/emptyslideshow.png" alt="Oops" /><div class="showcase-caption"><h3>UH OH!</h3><br/><p>There are no featured images right now. You should turn off "Display Slideshow" in the theme settings until you have some.</p></div></div>';
-    		}}
+    	}
+}
 
 
 function deco_awkward_gallery(){
@@ -191,7 +216,7 @@ function deco_get_recent_number($recentItems = null)
 
 function deco_display_theme_credit(){
 		$theme_credit=get_theme_option('Theme Credit');
-		$credit_text=' | <a href="http://jeffersonsnewspaper.org/2010/deco-an-omeka-theme/" title="Deco theme">Deco theme</a> by <a href="http://twitter.com/ebellempire/" title="@ebellempire">E. Bell</a>';
+		$credit_text=' | <a href="https://github.com/ebellempire/Deco" title="Deco theme on Github">Deco theme</a> by <a href="http://erinbell.org" title="ErinBell.org">E. Bell</a>';
 		if ($theme_credit == 'yes')return $credit_text;
 }
 /**

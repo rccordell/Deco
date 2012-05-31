@@ -29,12 +29,17 @@ body {font: 62.5% "Helvetica Neue",Helvetica, Arial, sans-serif; color: #333;}
 	h3 {font-size: 1.5em; line-height: 1.2em; margin: 0 0 1.2em; font-weight:lighter;}
 	h4 {font-size: 1.2em; line-height: 1.5em; margin-bottom:1.5em; font-weight:lighter;}
 	h5 {font-size: 1.2em; line-height: 1.5em; margin-bottom:1.5em; font-style:italic;}
+	
 
 	#content p, #content li{}
 
 	
 	h1 a, h2 a, h3 a {text-decoration:none;color:#333;}
 	img a {border: none;}
+	
+	/* -- Google Fonts -- */
+	#site-title a, #site-description h3 {font-family: 'Lobster';text-transform: none;}
+	h1, h2, h1 a, h2 a, h3, h3 a:link, .hTagcloud a{color:#333; font-family: 'Cuprum';}		
 
 	/* -- Misc Block elements -- */
 	p {font-size:1.2em; line-height:1.5em; margin-bottom:1.5em;}
@@ -90,8 +95,8 @@ body {font: 62.5% "Helvetica Neue",Helvetica, Arial, sans-serif; color: #333;}
 		
 		.element {overflow:hidden;clear:both;margin-bottom:1.5em;}
 		.element-text {font-size:1.2em; line-height:1.5em;margin:0;}
-        .element-text p {font-size:1em;margin:0;text-align: justify}
-        body#items.show #primary .element-text{text-align: justify;max-width: 600px}
+        .element-text p {font-size:1em;margin:0;}
+        body#items.show #primary .element-text{max-width: 600px}
 		.element-text-empty {font-size:1.2em; line-height:1.5em;margin:0;}
 		body.show .element-text {}
 						
@@ -123,30 +128,48 @@ body {font: 62.5% "Helvetica Neue",Helvetica, Arial, sans-serif; color: #333;}
 		#myomeka-posters{width:207px;float:right;clear:left; border-left:1px dotted #ccc;padding-left:23px}
 		#myomeka-create-poster{width:150px;margin:20px 0;text-align:right;}
 		#myomeka-noted-items{width: 600px; margin-bottom: 10px;padding: 10px 0; border-top: 1px solid #ccc;}
-		.myomeka-noted-items-list{min-height:285px;float:left}
+		.myomeka-noted-items-list{
+			float: left;
+			height: 285px;
+			max-height: 285px;
+			min-height: 285px;
+			overflow: hidden;			
+		}
 		.myomeka-noted-items-list ul li{width:180px;float:left; display:inline;padding-right:15px;}
-		.myomeka-noted-items-list ul li img{max-width:160px;max-height:90px}
+		.myomeka-noted-items-list ul li img{
+			float: left;
+			margin: 0 10px 0 0;
+			max-height: 50px;
+			max-width: 50px;
+		}
 		#myomeka-tags{width: 600px; clear: both; border-top: 1px solid #ccc; padding-top: 10px;margin-top:10px;}
 		h3.poster-title{clear:both; padding-top:17px;#primary-nav a }
 		ul.myomeka-poster-nav li a{float:left; margin-right:5px; margin-bottom:5px;}
-		#myomeka-poster-info{background: #f2f2f2; padding:7px; text-align: center;margin-bottom: 17px;}
-		#myomeka-poster .myomeka-poster-item {width:400px; float:left; clear:both;}
+		#myomeka-poster-info{background: #f2f2f2; padding:7px;margin-bottom: 17px;}
+		#myomeka-poster .myomeka-poster-item {float:left; clear:both;}
 		#myomeka-poster .myomeka-poster-item h3 {margin:0}
-		#myomeka-poster .myomeka-poster-item .myomeka-poster-item-annotation p{margin-left:130px;margin-top:7px;}
+		#myomeka-poster .myomeka-poster-item .myomeka-poster-item-annotation p{margin-left:130px;padding-right:130px;}
 		#myomeka-poster .myomeka-poster-item a img{float: right;
    		margin-bottom: 10px;
-    	margin-top: 27px;
-    	max-height: 120px;
-    	max-width: 120px;
+    	margin-right: 130px;
    		padding: 0 0 5px 10px; }
 		#myomeka-disclaimer{clear:both;background: #f2f2f2; padding:7px; text-align: center;margin-top: 17px;}
 		form#myomeka-poster-form {text-align: left;}
 		
 		/* MyOmeka Classes for items/show */
 		body#items.show #myomeka-add-notes #myomeka-edit-note form#myomeka-note-form textarea#note{width:250px;height:250px;}
-		body#items.show #myomeka-add-notes, #myomeka-add-tags {float:left; display:inline;width:280px;min-height:400px;background: #f2f2f2;padding:10px;margin:10px 0;}
-		body#items.show a.myomeka-help-link,body#items.show a.dashboard-link{display:inline;min-width:30px;padding: 5px 10px;}
+		body#items.show #myomeka-add-notes, #myomeka-add-tags {
+			background: #F2F2F2;
+			display: block;
+			margin: 10px 0;
+			padding: 10px;
+			width: 600px;			
+		}
+		body#items.show a.myomeka-help-link,body#items.show a.dashboard-link{display: inline;float: left; margin: 0 10px 15px 3px;}
 		body#items.show #myomeka-tags{border-top:none;width:auto;}
+		
+		/* Geolocation */
+		.map{margin-top:10px;}
 	
 		/* Exhibits Classes */
 		.exhibit {border-bottom:1px dotted #ccc;}
@@ -171,8 +194,8 @@ body {font: 62.5% "Helvetica Neue",Helvetica, Arial, sans-serif; color: #333;}
 		
 		/* Additional Exhibit Builder fixes (probably incomplete) */
 		
-			body#exhibit.show .exhibit-text p {text-align: justify}
-			body#exhibit.summary #primary p {text-align: justify}
+			body#exhibit.show .exhibit-text p {}
+			body#exhibit.summary #primary p {}
 
 			.gallery-full-right .exhibit-text p {width:400px;} 
 			
@@ -328,7 +351,7 @@ margin-top: 30px;}
 	.item-description {font-size:1.2em; line-height:1.5em; margin-bottom:17px;}
     .item-description p {font-size:1em;}
     
-    #site-description{background: #eaeaea;margin:0 17px 34px 0;padding: 13px;border: 1px solid #ccc;text-align: justify;}
+    #site-description{background: #eaeaea;margin:0 17px 34px 0;padding: 13px;border: 1px solid #ccc;}
     #site-description p:first-letter {}
     body#home #content #site-description h3 {color:#555; text-align: left;line-height: 1em;padding-bottom: 9px;clear:both}
     body#home #content #primary #site-description h2 {margin-left:-35px}
@@ -823,4 +846,3 @@ t: 0;
 	height: 0;
 	float: none;
 }
-

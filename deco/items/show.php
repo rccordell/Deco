@@ -77,9 +77,10 @@
 	//this loops through images for the item and returns a fullsize image for 
 	//the first item with square thumbs for the rest.  Images are grouped into galleries with the rel
 	//fancy_group and interact with FancyBox via the class fancy_item 	
-		if (($file->hasThumbnail()&&($index == 0))) 
+	//TIFFs should be handled via the Document Viewer plugin instead of Fancybox (not supported)
+		if (($file->hasThumbnail()&&($index == 0)&&(item_file('MIME Type')!=='image/tiff'))) 
 		echo 'Click the image to launch gallery view'.display_file($file, array('imageSize'=>'fullsize','linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => item('Dublin Core', 'Title'))),array('class' => 'fullsize', 'id' => 'item-image')); 
-		elseif (($file->hasThumbnail()&&($index !== 0))) 
+		elseif (($file->hasThumbnail()&&($index !== 0)&&(item_file('MIME Type')!=='image/tiff'))) 
 		echo display_file($file, array('imageSize'=>'square_thumbnail', 'linkToFile'=>true,'linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => item('Dublin Core', 'Title'))),array('class' => 'square_thumbnail')); 
 	//this is testing for rich media files and deciding what to do with them.	
 		//videoJS
@@ -158,6 +159,14 @@
 </div><!-- end primary -->
 	<ul class="item-pagination navigation">
 	<li id="previous-item" class="previous">
+		<?php echo link_to_previous_item('Previous Item'); ?>
+	</li>
+	<li id="next-item" class="next">
+		<?php echo link_to_next_item('Next Item'); ?>
+	</li>
+	</ul>
+
+<?php foot(); ?>	<li id="previous-item" class="previous">
 		<?php echo link_to_previous_item('Previous Item'); ?>
 	</li>
 	<li id="next-item" class="next">

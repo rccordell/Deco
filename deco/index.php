@@ -52,8 +52,11 @@ jQuery(document).ready(function()
 	
         <!-- Featured Items aka Awkward Showcase image gallery/slideshow-->
         <h2 class="awkward">Featured Items</h2>
+ 		
  		<div id="showcase" class="showcase">
- 		<?php deco_awkward_gallery();?>
+ 		
+ 			<?php deco_awkward_gallery();?>
+ 		
  		</div><!-- end featured items -->
 	
         <!-- Featured Exhibit -->

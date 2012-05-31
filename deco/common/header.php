@@ -25,7 +25,7 @@ display_css();
 
 <!-- get fancy fonts via Google Fonts API if the theme is "Wood" -->
 
-<?php if (deco_get_stylesheet()=='wood'){echo'<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster|Cuprum"/>';}
+<?php if (deco_get_stylesheet()!=='custom'){echo'<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster|Cuprum"/>';}
 ?>
 
 
@@ -72,13 +72,13 @@ display_js();
 		
 		<div id="primary-nav">
 			<ul class="navigation">
-			<?php echo public_nav_main(array('Home'=>uri(''), 'Browse Items' => uri('items'), 'Browse Collections'=>uri('collections'))); ?>
+				<?php echo deco_custom_navigation(); ?>
 			</ul>
-		<!-- search --> 
-		<div id="search-container">
-			<?php echo simple_search(); ?>
-			<?php echo link_to_advanced_search(); ?>
-		</div>
+			<!-- search --> 
+			<div id="search-container">
+			    <?php echo simple_search(); ?>
+			    <?php echo link_to_advanced_search(); ?>
+			</div>
 		</div><!-- end primary-nav -->
 		<div id="header">
 		<div id="site-title">
