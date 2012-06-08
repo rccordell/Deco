@@ -166,7 +166,7 @@
 	</li>
 	</ul>
 
-<?php foot(); ?>	<li id="previous-item" class="previous">
+	<li id="previous-item" class="previous">
 		<?php echo link_to_previous_item('Previous Item'); ?>
 	</li>
 	<li id="next-item" class="next">
