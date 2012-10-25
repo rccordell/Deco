@@ -78,10 +78,14 @@
 	//the first item with square thumbs for the rest.  Images are grouped into galleries with the rel
 	//fancy_group and interact with FancyBox via the class fancy_item 	
 	//TIFFs should be handled via the Document Viewer plugin instead of Fancybox (not supported)
+		
+		$caption = (item_file('Dublin Core', 'Title')) ? item_file('Dublin Core', 'Title') : item('Dublin Core', 'Title');
+		
 		if (($file->hasThumbnail()&&($index == 0)&&(item_file('MIME Type')!=='image/tiff'))) 
-		echo 'Click the image to launch gallery view'.display_file($file, array('imageSize'=>'fullsize','linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => item('Dublin Core', 'Title'))),array('class' => 'fullsize', 'id' => 'item-image')); 
+		echo 'Click the image to launch gallery view'.display_file($file, array('imageSize'=>'fullsize','linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => $caption)),array('class' => 'fullsize', 'id' => 'item-image')); 
 		elseif (($file->hasThumbnail()&&($index !== 0)&&(item_file('MIME Type')!=='image/tiff'))) 
-		echo display_file($file, array('imageSize'=>'square_thumbnail', 'linkToFile'=>true,'linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => item('Dublin Core', 'Title'))),array('class' => 'square_thumbnail')); 
+		echo display_file($file, array('imageSize'=>'square_thumbnail', 'linkToFile'=>true,'linkAttributes'=>array('rel'=>'fancy_group', 'class'=>'fancyitem','title' => $caption)),array('class' => 'square_thumbnail')); 
+		
 	//this is testing for rich media files and deciding what to do with them.	
 		//videoJS
 		elseif 
