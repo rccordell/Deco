@@ -1,115 +1,134 @@
 <?php
-// Use this file to define customized helper functions, filters or 'hacks' defined
-// specifically for use in your Omeka theme. Note that helper functions that are
-// designed for portability across themes should be grouped into a plugin whenever
-// possible.
-
-function deco_custom_navigation(){
-
-    if ($customHeaderNavigation = get_theme_option('Navigation Array')) {
-        $navArray = array();
-        $customLinkPairs = explode("\n", $customHeaderNavigation);
-        foreach ($customLinkPairs as $pair) {
-            $pair = trim($pair);
-            if ($pair != '') {
-                $pairArray = explode('|', $pair, 2);
-                if (count($pairArray) == 2) {
-                    $link = trim($pairArray[0]);
-                    $url = trim($pairArray[1]);
-                    if (strncmp($url, 'http://', 7) && strncmp($url, 'https://', 8)){
-                        $url = uri($url);
-                    }
-                }
-                $navArray[$link] = $url;
-            }
-        }
-        return nav($navArray);
-    } else {
-        $navArray = array('Home' => uri(''), 'Items' => uri('items'), 'Collections'=>uri('collections'));
-        return public_nav($navArray);
-    }	
-	
-}
-
-/**
- * Custom function to retrieve any number of random featured items.
- * via Jeremy Boggs
- * This functionality will likely be incorporated into future versions of Omeka (1.4?)
- * @param int $num The number of random featured items to return
- * @param boolean $withImage Whether to return items with derivative images. True by default.
- */
-function deco_get_random_featured_items($num = '10', $withImage = true)
+function bp_simple_search($html='',$buttonText = "Search", $formProperties=array('class'=>'simple-search'), $uri = null)
 {
-    // Get the database.
-    $db = get_db();
-
-    // Get the Item table.
-    $table = $db->getTable('Item');
-
-    // Build the select query.
-    $select = $table->getSelect();
-    $select->from(array(), 'RAND() as rand');
-    $select->where('i.featured = 1');
-    $select->order('rand DESC');
-    $select->limit($num);
-
-    // If we only want items with derivative image files, join the File table.
-    if ($withImage) {
-        $select->joinLeft(array('f'=>"$db->File"), 'f.item_id = i.id', array());
-        $select->where('f.has_derivative_image = 1');
+    // Always post the 'items/browse' page by default (though can be overridden).
+    if (!$uri) {
+        $uri = url('items/browse');
     }
-
-    // Fetch some items with our select.
-    $items = $table->fetchObjects($select);
-
-    return $items;
+    
+    $searchQuery = array_key_exists('search', $_GET) ? $_GET['search'] : '';
+    $formProperties['action'] = $uri;
+    $formProperties['method'] = 'get';
+    $html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
+    $html .= '<fieldset>' . "\n\n";
+    $html .= get_view()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput','placeholder'=>'Search items'));
+    $html .= get_view()->formSubmit('submit_search', $buttonText);
+    $html .= '</fieldset>' . "\n\n";
+    
+    // add hidden fields for the get parameters passed in uri
+    $parsedUri = parse_url($uri);
+    if (array_key_exists('query', $parsedUri)) {
+        parse_str($parsedUri['query'], $getParams);
+        foreach($getParams as $getParamName => $getParamValue) {
+            $html .= get_view()->formHidden($getParamName, $getParamValue);
+        }
+    }
+    
+    $html .= '</form>';
+    return $html;
 }
 
-// initialize Awkward Gallery on homepage
-// AwkwardGallery is jQuery must use HTML that looks like this...
-//
-// <div id="showcase" class="showcase">
-//	<div>
-//		<img src="IMAGE.JPG" alt="IMAGE" />
-//		<div class="showcase-thumbnail">
-//			<img src="IMAGE.JPG" alt="IMAGE" width="140px" />
-//			<div class="showcase-thumbnail-caption">THUMB CAPTION</div>
-//			<div class="showcase-thumbnail-cover"></div>
-//		</div>
-//		<div class="showcase-caption">
-//			<a href=""><h3>OVERLAY TITLE</h3></a><br/><p>OVERLAY DESCRIPTION</p>
-//		</div>
-//	</div>
-// </div>
+
+function deco_exhibit_builder_nested_nav($exhibitPage = null){
+	if (!$exhibitPage) {
+	    $exhibitPage = get_current_record('exhibit_page', false);
+	}
+
+	$exhibit = $exhibitPage->getExhibit();
+	$topPages = $exhibit->getTopPages();
+	$currentPage = $exhibitPage->id;
+	$addClass=' class="current" ';
+	    
+	$html = '<ul>';
+	foreach($topPages as $page){
+	
+		$html .= '<li'.__(($page->id == $currentPage) ? $addClass : "").'><a href="'.exhibit_builder_exhibit_uri($exhibit, $page).'">'.$page->title.'</a>';
+		
+		$children=exhibit_builder_child_pages($page);
+		if($children){
+			$html .= '<ul>';
+			foreach($children as $child){
+				$html .= '<li'.__(($child->id == $currentPage) ? $addClass : "").'><a href="'.exhibit_builder_exhibit_uri($exhibit, $child).'">'.$child->title.'</a></li>';
+				$grandchildren=exhibit_builder_child_pages($child);
+				if($grandchildren){
+					$html .= '<ul>';
+				foreach($grandchildren as $grandchild){
+					$html .= '<li'.__(($grandchild->id == $currentPage) ? $addClass : "").'><a href="'.exhibit_builder_exhibit_uri($exhibit, $grandchild).'">'.$grandchild->title.'</a></li>';
+				}
+					$html .= '</ul>';
+				}
+			}
+			$html .= '</ul>';
+		}
+		$html .='</li>';
+	}
+	$html .= '</ul>';
+	
+	return $html;
+}
+
+/*
+** initialize Awkward Gallery on homepage
+** AwkwardGallery is jQuery must use HTML that looks like this...
+**
+** <div id="showcase" class="showcase">
+**	<div>
+**		<img src="IMAGE.JPG" alt="IMAGE" />
+**		<div class="showcase-thumbnail">
+**			<img src="IMAGE.JPG" alt="IMAGE" width="140px" />
+**			<div class="showcase-thumbnail-caption">THUMB CAPTION</div>
+**			<div class="showcase-thumbnail-cover"></div>
+**		</div>
+**		<div class="showcase-caption">
+**			<a href=""><h3>OVERLAY TITLE</h3></a><br/><p>OVERLAY DESCRIPTION</p>
+**		</div>
+**	</div>
+** </div>
+*/
 
 function deco_display_awkward_gallery(){
-		//this loops the most recent featured items
-		$items = deco_get_random_featured_items(10);
+		$items = get_random_featured_items(10);
 		if ($items!=null) 
 		{
-		set_items_for_loop($items);
-		while(loop_items()): 
-		$filecount = 0;
-		$imagecount = 0;		
-			while ($file = loop_files_for_item()):
-			    if ($file->hasThumbnail()):
-			    //this makes sure the loop grabs only the first image for the item 
-			        if ( ($imagecount == 0) && ($filecount == 0) ): 
-		    	       echo '<div><img src="'.$file->getWebPath('fullsize').'" alt="" title=""/>'; 
+		
+		foreach ($items as $item): 
+			if (metadata($item, 'has thumbnail')){
+				set_current_record('item',$item);
+				$file=item_image('fullsize',$item);
+				$src = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $file , $matches);
+				$first_img = $matches[1][0];
+
+		    	       echo '<div><img src="'.$first_img.'" alt="" title=""/>'; 
 		    	       echo '<div class="showcase-caption">';
-		    	       echo /*Item Title and Link*/'<h3>'.link_to_item().'</h3>';
-		    	       echo /*Item Description Excerpt*/'<p>'.item('Dublin Core', 'Description',array('snippet'=>190));
-		    	       echo /*Link to Item*/ link_to_item(' ...more ').'</p></div></div>'; 
-				 	endif;
-				 	$imagecount++; 
-				 endif; 
-				 $filecount++;
-			endwhile;	
-		endwhile; 
-		}else{
-        	echo'<div><img src="'.uri('').'/themes/deco/images/emptyslideshow.png" alt="Oops" /><div class="showcase-caption"><h3>UH OH!</h3><br/><p>There are no featured images right now. You should turn off "Display Slideshow" in the theme settings until you have some.</p></div></div>';
+		    	       echo '<h3>'.link_to($item,$action,metadata($item,array('Dublin Core', 'Title'))).'</h3>';
+		    	       echo '<p>'.metadata($item,array('Dublin Core', 'Description'),array('snippet'=>190));
+		    	       echo link_to($item,$action,' ...more').'</p></div></div>'; 
+
+			}
+		endforeach; 
+		}
+		else{
+        	echo'<div><img src="'.url('').'themes/deco/images/emptyslideshow.png" alt="Oops" /><div class="showcase-caption"><h3>UH OH!</h3><br/><p>There are no featured images right now. You should turn off "Display Slideshow" in the theme settings until you have some.</p></div></div>';
     	}
 }
+
+//foreach(loop('items') as $item){
+//if (metadata($item, 'has thumbnail') && ($index<$num)):
+//
+//set_current_record('item',$item);
+//$file=item_image('fullsize',$item);
+//$src = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $file , $matches);
+//$first_img = $matches[1][0];
+//
+//$html .='<div data-src="';
+//$html .= $first_img;
+//$html .= '" data-link="'.record_url($item).'" data-easing="easeInOutCubic">';
+//$html .='<div class="camera_caption fadeFromBottom"><h4><a href="'.record_url($item).'">'.metadata($item,array('Dublin Core', 'Title')).'</a></h4></div></div>';
+//$index++;
+//
+//endif;
+//}
+//}
 
 
 function deco_awkward_gallery(){
@@ -121,22 +140,46 @@ function deco_awkward_gallery(){
 }
 
 //extends featured exhibit function to include snippet from description and read more link
-function deco_exhibit_builder_display_random_featured_exhibit()
-{
-    if (function_exists('exhibit_builder_random_featured_exhibit')){
-    $html = '<div id="featured-exhibit">';
-    $featuredExhibit = exhibit_builder_random_featured_exhibit();
-    $html .= '<h2>Featured Exhibit</h2>';
-    if ($featuredExhibit) {
-       $html .= '<h3>' . exhibit_builder_link_to_exhibit($featuredExhibit) . '</h3>';
-       $html .= '<p>' . snippet($featuredExhibit->description, 0, 500,exhibit_builder_link_to_exhibit($featuredExhibit, '<br/>...more')) . '</p>';
+function deco_exhibit_builder_display_random_featured_exhibit($num=1){
+//    if (function_exists('exhibit_builder_random_featured_exhibit')){
+//    $html = '<div id="featured-exhibit">';
+//    $featuredExhibit = exhibit_builder_random_featured_exhibit();
+//    $html .= '<h2>Featured Exhibit</h2>';
+//    if ($featuredExhibit) {
+//       $html .= '<h3>' . exhibit_builder_link_to_exhibit($featuredExhibit) . '</h3>';
+//       $html .= '<p>' . snippet($featuredExhibit->description, 0, 500,exhibit_builder_link_to_exhibit($featuredExhibit, '<br/>...more')) . '</p>';
+//
+//    } else {
+//       $html .= '<p>You have no featured exhibits.</p>';
+//    }
+//    $html .= '</div>';
+//    return $html;
+//    } 
+  if (function_exists('exhibit_builder_link_to_exhibit')){
+		$featuredExhibit=get_records('Exhibit', array('featured'=>true),$num);
+		$html ='';
+		if ($featuredExhibit){
+			
+			foreach( $featuredExhibit as $exhibit){
+				$html .= '<div class="featured-exhibit">';
+				$html .= '<h2>Exhibit</h2>';
+				
+				$html .= '<h3>' . exhibit_builder_link_to_exhibit($exhibit) . '</h3>';
+				
+				$snippetlink = '&nbsp;'.exhibit_builder_link_to_exhibit($exhibit,'... Continue Reading.').'';
+				$html .= '<p>' . snippet($exhibit->description, 0, 600,$snippetlink) . '</p>';
+				
+				$html .= '</div>';
+			}
+		}else{
+			$html .= '<p>You have no featured exhibits.</p>';
+		}
+		return $html;
+  } 
 
-    } else {
-       $html .= '<p>You have no featured exhibits.</p>';
-    }
-    $html .= '</div>';
-    return $html;
-} } 
+
+
+} 
 
 
 /**
@@ -271,45 +314,46 @@ function deco_fancybox(){
  *
  **/
 //this is the function that toggles the Collection Thumbs
-function deco_collection_thumbs_number(){
+function deco_collection_thumbs_number($num=4){
 		$collection_thumbs_setting=get_theme_option('Collection Thumbs');
 		if ($collection_thumbs_setting == 'yes'){
+			
 			echo '<div id="index-collection-img">';
-    	    while (loop_items_in_collection(4)):
-			echo link_to_item((item_square_thumbnail()), array('item' => item('id')));
-			endwhile;
+    	    $coll=get_current_record('Collections',false)->id;
+    	    
+    	    $items=get_records('item',array('hasImage'=>true,'collection'=>$coll),$num);
+    	    if(count($items)>=$num){
+	        set_loop_records('items', $items);
+	        if (has_loop_records('items')){
+		        foreach (loop('items') as $item){
+		        	echo link_to_item(item_image('square_thumbnail'));
+		        	}
+	        }
+	        }
 			echo'</div>';
+			
 		} 
 }
 		
 function deco_random_featured_collection(){
-			$collection = random_featured_collection();
-			set_current_collection($collection);
-			if ($collection) {
-			echo '<h2>'."Featured Collection".'</h2>';
-			echo '<h3>'.link_to_collection().'</h3>';
-			echo '<p>'.collection('Description').'</p>';
-			deco_collection_thumbs_number();
-			} else 
-			{
-        	echo'<p><em>There are no featured collections right now. You should turn off "Display Featured Collections" in the theme settings until you have some.</em></p>';
+			$collection=get_db()->getTable('Collection')->findRandomFeatured();
+	        if ($collection){
+	        set_current_record('collection', $collection);
+					echo '<h2>Featured Collection</h2>';
+					echo '<h3>'.link_to_collection().'</h3>';
+					echo '<p>'.metadata($collection,array("Dublin Core","Description"),array('snippet'=>750)).'</p>';
+					echo deco_collection_thumbs_number();
+			}else{
+        		echo'<p><em>There are no featured collections right now. You should turn off "Display Featured Collections" in the theme settings until you have some.</em></p>';
     		}
 }
+
 //this is the function that is actually used on homepage...
 function deco_display_random_featured_collection(){
 		$random_featured_collection_setting=get_theme_option('Random Featured Collection') ? get_theme_option('Random Featured Collection') : 'yes';
 		if ($random_featured_collection_setting == 'yes')return deco_random_featured_collection();
 }
-function deco_custom_docs_viewer_placement(){
-	if (class_exists('DocsViewerPlugin')&&(!get_option('docsviewer_embed_public'))):
-	$docsViewer = new DocsViewerPlugin;
-    $docsViewer->embed();
-	endif;
-}
-function deco_docs_viewer_placement(){
-	$docs_viewer_placement=get_theme_option('Docs Viewer Placement');
-	if ($docs_viewer_placement=='yes') return deco_custom_docs_viewer_placement();
-}
+
 // this function uses Zend_Feed to fetch and display an RSS or Atom feed
 // example usage, to display one post from omeka.org --> echo deco_display_rss('http://omeka.org/feed/',1) 
 function deco_display_rss($feedUrl, $num = 3) {

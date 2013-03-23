@@ -1,27 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo get_html_lang(); ?>">
 <head>
-<title><?php echo settings('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
+<title><?php echo option('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
 
 <!-- Meta -->
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="description" content="<?php echo settings('description'); ?>" />
+<meta name="description" content="<?php echo option('description'); ?>" />
 
-<?php echo auto_discovery_link_tag(); ?>
+<?php echo auto_discovery_link_tags(); ?>
 
 <!-- Get Core stylesheets -->
 
-<?php echo queue_css('screen');
-queue_css('jquery.fancybox-1.3.4');
-queue_css('video-js');
-queue_css('print'); 
-display_css();
+<?php 
+queue_css_file('screen');
+queue_css_file('jquery.fancybox-1.3.4');
+queue_css_file('video-js');
+queue_css_file('print'); 
+echo head_css();
 ?>
 
 <!-- Get the Configurable stylesheet -->
 
-<link rel="stylesheet" media="screen" href="<?php echo html_escape(css(deco_get_stylesheet())); ?>" />
+<link rel="stylesheet" media="screen" href="<?php echo html_escape(css_src(deco_get_stylesheet())); ?>" />
 
 <!-- get fancy fonts via Google Fonts API if the theme is "Wood" -->
 
@@ -43,7 +44,7 @@ display_css();
  */
 if ($bodyid==("home"||"items")){
 
-    queue_js(
+    queue_js_file(
         array(
             'fancybox/jquery.fancybox-1.3.4',
             'fancybox/jquery.easing-1.3.pack',
@@ -54,12 +55,12 @@ if ($bodyid==("home"||"items")){
 
 }
 
-display_js();
+echo head_js();
 ?>
 
 <!-- Plugin Stuff -->
 
-<?php echo plugin_header(); ?>
+<?php echo fire_plugin_hook('public_header'); ?>
 
 <!-- this hides the slideshow divs from users who do not have javascript enabled so they don't see a big mess -->
 <noscript>
@@ -72,12 +73,12 @@ display_js();
 		
 		<div id="primary-nav">
 			<ul class="navigation">
-				<?php echo deco_custom_navigation(); ?>
+				<?php echo public_nav_main(); ?>
 			</ul>
 			<!-- search --> 
 			<div id="search-container">
-			    <?php echo simple_search(); ?>
-			    <?php echo link_to_advanced_search(); ?>
+			    <?php echo bp_simple_search(); ?>
+			    <?php echo link_to_item_search('Advanced Search'); ?>
 			</div>
 		</div><!-- end primary-nav -->
 		<div id="header">
@@ -88,3 +89,4 @@ display_js();
 		</div>
 
 		<div id="content">
+		<?php fire_plugin_hook('public_content_top'); ?>

@@ -1,53 +1,93 @@
-<?php head(array('title'=>'Browse Items','bodyid'=>'items','bodyclass' => 'browse')); ?>
+<?php echo head(array('title'=>'Browse Items','bodyid'=>'items','bodyclass' => 'browse')); ?>
 
 	<div id="primary">
 		
-		<h1>Browse Items (<?php echo total_results(); ?> total)</h1>
+		<h1>
+		
+		<?php
+		$collection_id = (isset($_GET['collection']) ? $_GET['collection'] : null);
+		$tag = (isset($_GET['tags']) ? $_GET['tags'] : null);
+		$query = (isset($_GET['search']) ? $_GET['search'] : null);
+		$advanced = (isset($_GET['advanced']) ? true : false);
+		
+		if ( ($collection_id) && !($query) ) {
+		$collection_id=get_record_by_id('Collection',$collection_id);
+		echo 'Items from "'.metadata($collection_id,array('Dublin Core', 'Title')).'"';
+		}
+		elseif ( ($tag) && !($query) ) {
+		echo 'Items tagged "'.$tag.'"';
+		}
+		elseif ($query) {
+		echo (!($advanced) ? 'Search Results for "'.$query.'"':'Advanced Search Results');
+		}	
+		else{
+		echo 'Browse Items';
+		}	
+		echo ': <span class="item-number">'.$total_results.'</span>';
+		echo (($query) ? '&nbsp;<span id="refine-search">['.link_to_item_search($text = 'refine search').']</span>' : '' )
+		?>
+		
+		</h1>
 
 		<ul class="items-nav navigation" id="secondary-nav">
-			<?php echo nav(array('Browse All' => uri('items'), 'Browse by Tag' => uri('items/tags'))); ?>
+			<?php 
+			$navArray = array(
+			array('label'=>'Browse All', 'uri'=>url('items')),
+			array('label'=>'Browse By Tag', 'uri'=>url('items/tags'))
+			);
+			echo nav($navArray);					
+			?>
 		</ul>
 		
 		<div id="pagination-top" class="pagination"><?php echo pagination_links(); ?></div>
 		
-		<?php while (loop_items()): ?>
+		<?php 
+		foreach(loop('Items') as $item):
+		set_current_record('Item',$item);
+		$item= get_current_record('Item');			
+		?>
 			<div class="item hentry">    
 				<div class="item-meta">
 				    
-				<h2><?php echo link_to_item(item('Dublin Core', 'Title'), array('class'=>'permalink')); ?></h2>
+				<h2><?php echo link_to_item(metadata('Item',array('Dublin Core', 'Title'), array('class'=>'permalink'))); ?></h2>
 
-				<?php if (item_has_thumbnail()): ?>
-    				<div class="item-img">
-    				<?php echo link_to_item(item_square_thumbnail()); ?>						
-    				</div>
+
+				<?php if (metadata('Item','has_thumbnail')): ?>
+				<div class="item-img">
+				<?php echo link_to_item(item_image('square_thumbnail',array('width'=>'120px','height'=>'auto'))); ?>	
+				</div>
 				<?php endif; ?>
 				
-				<?php if ($text = item('Item Type Metadata', 'Text', array('snippet'=>250))): ?>
-    				<div class="item-description">
-    				<p><?php echo $text; ?></p>
-    				</div>
-				<?php elseif ($description = item('Dublin Core', 'Description', array('snippet'=>250))): ?>
-    				<div class="item-description">
-    				<?php echo $description; ?>
-    				</div>
-				<?php endif; ?>
-
-				<?php if (item_has_tags()): ?>
-    				<div class="tags"><p><strong>Tags:</strong>
-    				<?php echo item_tags_as_string(); ?></p>
-    				</div>
-				<?php endif; ?>
+				<div class="item-description">				
+					<?php if ($text = metadata('Item',array('Item Type Metadata', 'Text'), array('snippet'=>350))): ?>
+					<p><?php echo $text; ?></p>
+					<?php elseif ($description = metadata('Item',array('Dublin Core', 'Description'), array('snippet'=>350))): ?>
+	
+					<?php echo $description; ?>
+	
+					<?php else : ?>	
+					View full record for details.
+					<?php endif; ?>		
 				
-				<?php echo plugin_append_to_items_browse_each(); ?>
+
+					<?php if (metadata($item, 'has_tags')): ?>
+					<div class="tags"><p><strong>Tags:</strong>
+					<?php echo tag_string($item, url('items/browse')); ?> </p>
+					</div>
+					<?php endif; ?>				
+				</div>
+				
+				
+				<?php echo fire_plugin_hook('items_browse_each'); ?>
 
 				</div><!-- end class="item-meta" -->
 			</div><!-- end class="item hentry" -->
-		<?php endwhile; ?>
+		<?php endforeach; ?>
 	
 		<div id="pagination-bottom" class="pagination"><?php echo pagination_links(); ?></div>
 		
-		<?php echo plugin_append_to_items_browse(); ?>
+		<?php echo fire_plugin_hook('items_browse'); ?>
 			
 	</div><!-- end primary -->
 	
-<?php foot(); ?>
+<?php echo foot(); ?>
