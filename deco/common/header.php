@@ -84,9 +84,7 @@ echo $bodyclass ? ' class="'.$bodyclass.'"' : '';
 		
 		<div id="mobile-menu-button"><a>Show Menu</a></div>
 		<div id="primary-nav">
-			<ul class="navigation">
 				<?php echo public_nav_main(); ?>
-			</ul>
 			<!-- search --> 
 			<div id="search-container">
 			    <?php echo bp_simple_search(); ?>
