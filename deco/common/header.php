@@ -74,7 +74,11 @@ echo head_js();
 </noscript>
 
 </head>
-<body<?php echo $bodyid ? ' id="'.$bodyid.'"' : ''; ?><?php echo $bodyclass ? ' class="'.$bodyclass.'"' : ''; ?>>
+<body<?php 
+$bodyclass .= ' '.deco_body_bg();
+echo $bodyid ? ' id="'.$bodyid.'"' : '';
+echo $bodyclass ? ' class="'.$bodyclass.'"' : '';
+?>>
 <?php fire_plugin_hook('public_body', array('view'=>$this)); ?>
 	<div id="wrap">
 		
