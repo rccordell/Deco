@@ -120,75 +120,69 @@ function deco_exhibit_builder_nested_nav($exhibitPage = null){
 	return $html;
 }
 
-/*
-** initialize Awkward Gallery on homepage
-** AwkwardGallery is jQuery must use HTML that looks like this...
-**
-** <div id="showcase" class="showcase">
-**	<div>
-**		<img src="IMAGE.JPG" alt="IMAGE" />
-**		<div class="showcase-thumbnail">
-**			<img src="IMAGE.JPG" alt="IMAGE" width="140px" />
-**			<div class="showcase-thumbnail-caption">THUMB CAPTION</div>
-**			<div class="showcase-thumbnail-cover"></div>
-**		</div>
-**		<div class="showcase-caption">
-**			<a href=""><h3>OVERLAY TITLE</h3></a><br/><p>OVERLAY DESCRIPTION</p>
-**		</div>
-**	</div>
-** </div>
-*/
 
-function deco_display_awkward_gallery(){
-		$items = get_random_featured_items(10);
-		if ($items!=null) 
-		{
-		
-		foreach ($items as $item): 
-			if (metadata($item, 'has thumbnail')){
-				set_current_record('item',$item);
-				$file=item_image('fullsize',$item);
-				$src = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $file , $matches);
-				$first_img = $matches[1][0];
-
-		    	       echo '<div><img src="'.$first_img.'" alt="" title=""/>'; 
-		    	       echo '<div class="showcase-caption">';
-		    	       echo '<h3>'.link_to($item,$action,metadata($item,array('Dublin Core', 'Title'))).'</h3>';
-		    	       echo '<p>'.metadata($item,array('Dublin Core', 'Description'),array('snippet'=>190));
-		    	       echo link_to($item,$action,' ...more').'</p></div></div>'; 
 
 			}
-		endforeach; 
 		}
-		else{
-        	echo'<div><img src="'.url('').'themes/deco/images/emptyslideshow.png" alt="Oops" /><div class="showcase-caption"><h3>UH OH!</h3><br/><p>There are no featured images right now. You should turn off "Display Slideshow" in the theme settings until you have some.</p></div></div>';
+function deco_homepage_gallery_items(){
+		if (get_theme_option('Featured Image Gallery') == 'yes'){
+			$items = get_random_featured_items(10);
+			if ($items!=null) 
+			{	
+			$html = '';	
+			foreach ($items as $item): 
+				if (metadata($item, 'has thumbnail')){
+					set_current_record('item',$item);
+					$file=item_image('fullsize',$item);
+					$src = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $file , $matches);
+					$first_img = $matches[1][0];
+	
+			    	       $html .= '<div class="main">';
+			    	       		$html .= '<img src="'.$first_img.'">';
+				    	       $html .=  '<div class="caption">';
+				    	       $html .=  '<h3>'.link_to($item,$action,metadata($item,array('Dublin Core', 'Title'))).'</h3>';
+				    	       $html .=  '<p>'.metadata($item,array('Dublin Core', 'Description'),array('snippet'=>190));
+				    	       $html .=  link_to($item,$action,' ...more').'</p>';
+				    	       $html .= '</div>'; 
+			    	       $html .='</div>';
+	
+				}
+			endforeach; 
+			return $html;
+			}
     	}
 }
 
-//foreach(loop('items') as $item){
-//if (metadata($item, 'has thumbnail') && ($index<$num)):
-//
-//set_current_record('item',$item);
-//$file=item_image('fullsize',$item);
-//$src = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $file , $matches);
-//$first_img = $matches[1][0];
-//
-//$html .='<div data-src="';
-//$html .= $first_img;
-//$html .= '" data-link="'.record_url($item).'" data-easing="easeInOutCubic">';
-//$html .='<div class="camera_caption fadeFromBottom"><h4><a href="'.record_url($item).'">'.metadata($item,array('Dublin Core', 'Title')).'</a></h4></div></div>';
-//$index++;
-//
-//endif;
-//}
-//}
-
-
-function deco_awkward_gallery(){
-		$awkward_gallery_setting=get_theme_option('Featured Image Gallery') ? get_theme_option('Featured Image Gallery') : 'yes';
-		if ($awkward_gallery_setting == 'yes'){return deco_display_awkward_gallery();
-} else{
-	echo '<style>#showcase,.showcase, h2.awkward{display:none; visibility:hidden;}</style>';
+function deco_homepage_gallery(){
+?>			
+        	<style type="text/css">
+				.swipe {
+				  overflow: hidden;
+				  visibility: hidden;
+				  position: relative;
+				}
+				.swipe-wrap {
+				  overflow: hidden;
+				  position: relative;
+				}
+				.swipe-wrap > div {
+				  float:left;
+				  width:100%;
+				  position: relative;
+				}        	
+        	</style>
+			<h2 class="gallery">Featured Items</h2>
+			<div id='slider' class='swipe'>
+			  <div class='swipe-wrap'>
+			    <?php echo deco_homepage_gallery_items();?>
+			  </div>
+			</div>
+			
+			<div id="slide-nav">
+				<button class="prev icon-angle-left" onclick="mySwipe.prev()"><span>prev</span></button>
+				<button class="next icon-angle-right" onclick="mySwipe.next()"><span>next</span></button>
+			</div>			
+<?php
 }
 }
 
