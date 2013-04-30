@@ -12,54 +12,13 @@
             -->
             
         </div><!--end About-->
-
-	<!-- Start Awkward Gallery load/config -->
-	<script type="text/javascript">
-	jQuery.noConflict();
-	jQuery(document).ready(function()
-	{
-		jQuery("#showcase").awShowcase(
-		{
-			width:					625,
-			height:					500,
-			auto:					true,
-			interval:				6500,
-			continuous:				false,
-			loading:				true,
-			tooltip_width:			200,
-			tooltip_icon_width:		32,
-			tooltip_icon_height:	32,
-			tooltip_offsetx:		18,
-			tooltip_offsety:		0,
-			arrows:					false, 
-			buttons:				true,
-			btn_numbers:			false,
-			keybord_keys:			true,
-			mousetrace:				false,
-			pauseonover:			true,
-			transition:				'vslide', /* vslide/hslide/fade */
-			transition_speed:		500,
-			show_caption:			'onload', /* onload/onhover/show */
-			thumbnails:				false,
-			thumbnails_position:	'outside-last', /* outside-last/outside-first/inside-last/inside-first */
-			thumbnails_direction:	'horizontal', /* vertical/horizontal */
-			thumbnails_slidex:		0 /* 0 = auto / 1 = slide one thumbnail / 2 = slide two thumbnails / etc. */
-		});
-	});
-	</script>
-	<!-- end Awkward Gallery load/config -->
 	
-        <!-- Featured Items aka Awkward Showcase image gallery/slideshow-->
-        <h2 class="awkward">Featured Items</h2>
- 		
- 		<div id="showcase" class="showcase">
- 		
- 			<?php echo deco_awkward_gallery();?>
- 		
- 		</div><!-- end featured items -->
+        <!-- Featured Items slideshow-->
+ 			<?php echo deco_homepage_gallery();?> 		
+ 		<!-- end featured items -->
 	
         <!-- Featured Exhibit -->
-        <div id="featured-exhibits" style="margin-top:1.5em;">
+        <div id="featured-exhibits">
             <?php echo deco_exhibit_builder_display_random_featured_exhibit(); ?>
         </div><!-- end featured collection -->
         
