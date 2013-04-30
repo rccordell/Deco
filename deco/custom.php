@@ -1,4 +1,24 @@
 <?php
+// get user-configured background image or pattern
+function deco_body_bg(){
+	if(get_theme_option('bg_img')!='none'){
+		//There's not currently a good reason to separate CSS and IMG options, but...
+	
+		$img=array('paperlight','greenlit','fabric_grey','graph','grungewood','whitewood','wood');
+		$css=array('tartan','madras','blueprint');
+		
+		if(array_search(get_theme_option('bg_img'),$img)!==false){
+			$bgimg=get_theme_option('bg_img');
+			return $bgimg;
+			
+		}elseif(array_search(get_theme_option('bg_img'),$css)!==false){
+			$bgclass=get_theme_option('bg_img');
+			return $bgclass;
+		}		
+		
+	}
+}
+
 function bp_simple_search($html='',$buttonText = "Search", $formProperties=array('class'=>'simple-search'), $uri = null)
 {
     // Always post the 'items/browse' page by default (though can be overridden).
