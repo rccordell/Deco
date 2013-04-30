@@ -82,6 +82,7 @@ echo $bodyclass ? ' class="'.$bodyclass.'"' : '';
 <?php fire_plugin_hook('public_body', array('view'=>$this)); ?>
 	<div id="wrap">
 		
+		<div id="mobile-menu-button"><a>Show Menu</a></div>
 		<div id="primary-nav">
 			<ul class="navigation">
 				<?php echo public_nav_main(); ?>
