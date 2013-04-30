@@ -19,6 +19,39 @@ function deco_body_bg(){
 	}
 }
 
+// get user-configured fonts for header call to Google Web Fonts API
+function deco_get_fonts(){
+	$primary=get_theme_option('decofont');
+	$secondary=get_theme_option('headfont');
+	
+	$fonts='';
+	
+	$fonts .= ($primary != 'none') ? $primary : false;
+	$fonts .= ($secondary != 'none') ? ( ($primary!=='none')?'|':'' ).$secondary : false;
+	
+	return (strlen($fonts)>0) ? $fonts : false;
+}
+// format the font names for use in CSS styles
+function deco_fonts_for_css($which){
+	$primary=(get_theme_option('decofont')!=='none') ? 'font-family: '.get_theme_option('decofont') : '';
+	$secondary=(get_theme_option('headfont')!=='none') ? 'font-family: '.get_theme_option('headfont') : '';	
+	
+	$primary = str_replace("+"," ", $primary);
+	$secondary = str_replace("+"," ", $secondary);
+	
+	switch ($which) {
+	    case 'primary':
+	        return $primary;
+	        break;
+	    case 'secondary':
+	        return $secondary;
+	        break;
+	    default:
+	       return "";
+	}		
+
+}
+
 function bp_simple_search($html='',$buttonText = "Search", $formProperties=array('class'=>'simple-search'), $uri = null)
 {
     // Always post the 'items/browse' page by default (though can be overridden).
