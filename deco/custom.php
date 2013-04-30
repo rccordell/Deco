@@ -425,3 +425,14 @@ function deco_display_rss($feedUrl, $num = 3) {
            . "<p class='feed-content'>$description <a href=\"$link\">...more</a></p>";
     }
 }
+function deco_nav(){
+		$navArray = array(
+		array('label'=>'All', 'uri'=>url('items/browse')),
+		array('label'=>'Tags', 'uri'=>url('items/tags')),
+		array('label'=>'Search', 'uri'=>url('items/search'))
+		);
+		if(plugin_is_active('geolocation')){
+			array_push($navArray,array('label'=>'Map', 'uri'=>url('geolocation/map/browse')));
+		}
+		return nav($navArray);	
+}
