@@ -258,20 +258,7 @@ function deco_video_ResponsifyVideoScript($videoIndex, $aspectRatio='360/640'){
 
 //extends featured exhibit function to include snippet from description and read more link
 function deco_exhibit_builder_display_random_featured_exhibit($num=1){
-//    if (function_exists('exhibit_builder_random_featured_exhibit')){
-//    $html = '<div id="featured-exhibit">';
-//    $featuredExhibit = exhibit_builder_random_featured_exhibit();
-//    $html .= '<h2>Featured Exhibit</h2>';
-//    if ($featuredExhibit) {
-//       $html .= '<h3>' . exhibit_builder_link_to_exhibit($featuredExhibit) . '</h3>';
-//       $html .= '<p>' . snippet($featuredExhibit->description, 0, 500,exhibit_builder_link_to_exhibit($featuredExhibit, '<br/>...more')) . '</p>';
-//
-//    } else {
-//       $html .= '<p>You have no featured exhibits.</p>';
-//    }
-//    $html .= '</div>';
-//    return $html;
-//    } 
+
   if (function_exists('exhibit_builder_link_to_exhibit')){
 		$featuredExhibit=get_records('Exhibit', array('featured'=>true),$num);
 		$html ='';
@@ -279,7 +266,7 @@ function deco_exhibit_builder_display_random_featured_exhibit($num=1){
 			
 			foreach( $featuredExhibit as $exhibit){
 				$html .= '<div class="featured-exhibit">';
-				$html .= '<h2>Exhibit</h2>';
+				$html .= '<h2>Featured Exhibit</h2>';
 				
 				$html .= '<h3>' . exhibit_builder_link_to_exhibit($exhibit) . '</h3>';
 				
@@ -299,26 +286,6 @@ function deco_exhibit_builder_display_random_featured_exhibit($num=1){
 } 
 
 
-/**
- * This function returns the style sheet for the theme. It will use the argument
- * passed to the function first, then the theme_option for Style Sheet, then
- * a default style sheet.
- *
- * @param $styleSheet The name of the style sheet to use. (null by default)
- *
- **/
-function deco_get_stylesheet($styleSheet = null)
-{    
-    if (!$styleSheet) {
-        
-        $styleSheet = get_theme_option('Style Sheet') ? 
-        get_theme_option('Style Sheet') : 
-        'greenstripe';
-    }
-    
-    return $styleSheet; 
-    
-}
 /**
  * This function returns the tagline for the theme.  
  *
@@ -376,43 +343,10 @@ function deco_get_recent_number($recentItems = null)
 
 function deco_display_theme_credit(){
 		$theme_credit=get_theme_option('Theme Credit');
-		$credit_text=' | <a href="https://github.com/ebellempire/Deco" title="Deco theme on Github">Deco theme</a> by <a href="http://erinbell.org" title="ErinBell.org">E. Bell</a>';
+		$credit_text=' | <a href="https://github.com/ebellempire/Deco" title="Deco theme on Github">Deco</a> theme by <a href="http://erinbell.org" title="ErinBell.org">E. Bell</a>';
 		if ($theme_credit == 'yes')return $credit_text;
 }
-/**
- * This function returns the related exhibit settings for the theme.  
- *
- **/
 
-//defining the function used to show related exhibits in items/show.php (via omeka.org)
-//this could be improved to take into account items that are used multiple times in the same exhibit, which right now causes a redundant link
-function deco_link_to_related_exhibits($item) {
-	require_once "Exhibit.php"; 
-	$db = get_db();
-
-	$select = "
-	SELECT e.* FROM {$db->prefix}exhibits e
-	INNER JOIN {$db->prefix}sections s ON s.exhibit_id = e.id
-	INNER JOIN {$db->prefix}section_pages sp on sp.section_id = s.id
-	INNER JOIN {$db->prefix}items_section_pages isp ON isp.page_id = sp.id
-	WHERE isp.item_id = ?";
-
-	$exhibits = $db->getTable("Exhibit")->fetchObjects($select,array($item));
-
-	if(!empty($exhibits)) {
-		echo '<h3>Related Exhibits</h3>';
-		echo '<ul>';
-		foreach($exhibits as $exhibit) {
-			echo '<li>'.exhibit_builder_link_to_exhibit($exhibit).'</li>';
-		}
-		echo '</ul>';
-	}
-}
-//this is the function that is actually used on items/show...
-function deco_display_related_exhibits(){
-		$related_exhibits_setting=get_theme_option('Related Exhibits');
-		if ($related_exhibits_setting == 'yes')return deco_link_to_related_exhibits(item('ID'));
-}
 
 /**
  * This function returns the FancyBox (lightbox) settings for the theme
