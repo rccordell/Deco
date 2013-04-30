@@ -4,8 +4,9 @@
 <title><?php echo option('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
 
 <!-- Meta -->
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="description" content="<?php echo option('description'); ?>" />
 
 <?php echo auto_discovery_link_tags(); ?>
