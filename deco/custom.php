@@ -122,8 +122,51 @@ function deco_exhibit_builder_nested_nav($exhibitPage = null){
 
 
 
+function deco_exhibit_builder_pagination_nav($exhibitPage = null,$summaryPage=false){
+	if (!$exhibitPage) {
+	    $exhibitPage = get_current_record('exhibit_page', false);
+	}
+
+	$exhibit = $exhibitPage->getExhibit();
+	$topPages = $exhibit->getTopPages();
+	$currentPage = $exhibitPage->id;
+	$addClass=' class="current" ';
+	$index=0;
+	    
+	$html = '<nav class="pagination"><ul>';
+	
+	$html .= ($summaryPage!==true) ? '<li>'.link_to_exhibit('Summary').'</li>' : '';
+	$html .= ( ($summaryPage!==true) && ($prevLink = exhibit_builder_link_to_previous_page('Previous')) ) ? '<li>'.$prevLink.'</li>' : '' ;
+	
+	foreach($topPages as $page){
+		$index++;
+		$html .= '<li'.__(($page->id == $currentPage) ? $addClass : "").'><a title="'.$page->title.'" href="'.exhibit_builder_exhibit_uri($exhibit, $page).'">'.$index.'</a>';
+		
+		$children=exhibit_builder_child_pages($page);
+		if($children){
+			foreach($children as $child){
+				$index++;
+				$html .= '<li'.__(($child->id == $currentPage) ? $addClass : "").'><a title="'.$child->title.'" href="'.exhibit_builder_exhibit_uri($exhibit, $child).'">'.$index.'</a></li>';
+				$grandchildren=exhibit_builder_child_pages($child);
+				if($grandchildren){
+				foreach($grandchildren as $grandchild){
+					$index++;
+					$html .= '<li'.__(($grandchild->id == $currentPage) ? $addClass : "").'><a title="'.$grandchild->title.'"href="'.exhibit_builder_exhibit_uri($exhibit, $grandchild).'">'.$index.'</a></li>';
+					}
+				}
 			}
 		}
+		$html .='</li>';
+	}
+	$html .= ( ($summaryPage!==true) && ($nextLink = exhibit_builder_link_to_next_page('Next')) ) ? '<li>'.$nextLink.'</li>' : '' ;
+	$html .= '</ul></nav>';
+	
+	return $html;
+}
+
+
+
+
 function deco_homepage_gallery_items(){
 		if (get_theme_option('Featured Image Gallery') == 'yes'){
 			$items = get_random_featured_items(10);
