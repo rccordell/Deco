@@ -33,28 +33,13 @@ echo head_css();
 <!-- JavaScripts -->
 
 <?php
-
-/**
- * Start Conditional JS
- *
- * The following scripts only load on the homepage and items pages due to
- * potential plugin conflicts (incl. current version of MyOmeka).  If you would
- * like to use the slideshow or fancybox on another page, add the bodyid for
- * each page below, separated by the or operator (||).
- */
-if ($bodyid==("home"||"items")){
-
-    queue_js_file(
-        array(
-            'fancybox/jquery.fancybox-1.3.4',
-            'fancybox/jquery.easing-1.3.pack',
-            'video-js/video',
-            'jquery.aw-showcase'
-        )
-    );
-
-}
-
+queue_js_file(array(
+	'fancybox/jquery.easing-1.3.pack',
+	'fittext.min',
+	'fancybox/jquery.fancybox-1.3.4',
+	'video-js/video',
+	'swipe.min'
+	));
 echo head_js();
 ?>
 
