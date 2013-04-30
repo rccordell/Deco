@@ -11,6 +11,7 @@
 
 <?php echo auto_discovery_link_tags(); ?>
 
+<?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
 
 <!-- Get Core stylesheets -->
 <?php 
@@ -70,6 +71,7 @@ echo head_js();
 
 </head>
 <body<?php echo $bodyid ? ' id="'.$bodyid.'"' : ''; ?><?php echo $bodyclass ? ' class="'.$bodyclass.'"' : ''; ?>>
+<?php fire_plugin_hook('public_body', array('view'=>$this)); ?>
 	<div id="wrap">
 		
 		<div id="primary-nav">
