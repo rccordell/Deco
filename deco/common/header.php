@@ -11,8 +11,8 @@
 
 <?php echo auto_discovery_link_tags(); ?>
 
-<!-- Get Core stylesheets -->
 
+<!-- Get Core stylesheets -->
 <?php 
 queue_css_file('screen');
 queue_css_file('jquery.fancybox-1.3.4');
@@ -21,15 +21,30 @@ queue_css_file('print');
 echo head_css();
 ?>
 
-<!-- Get the Configurable stylesheet -->
 
-<link rel="stylesheet" media="screen" href="<?php echo html_escape(css_src(deco_get_stylesheet())); ?>" />
-
-<!-- get fancy fonts via Google Fonts API if the theme is "Wood" -->
-
-<?php if (deco_get_stylesheet()!=='custom'){echo'<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster|Cuprum"/>';}
+<!-- get fancy fonts via Google Fonts API -->
+<?php if (deco_get_fonts()!==false){
+	echo'<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family='.deco_get_fonts().'"/>';
+	}
 ?>
 
+<!-- configurable styles -->
+<style>
+#site-title h2 a,#site-description h3,#footer p a{<?php echo deco_fonts_for_css('primary');?>}
+h1,h2,h3,h4,h5,#site-title .tagline{<?php echo deco_fonts_for_css('secondary');?>}
+
+
+
+<?php if(get_theme_option('no_radius')=='1'){?>
+	#mobile-menu-button a,#content,#site-title{border-radius: 0;}
+<?php }?>
+<?php if(get_theme_option('add_transparency')=='1'){?>
+	.small #mobile-menu-button a, .small #footer .navigation{opacity: .8;}
+<?php }?>
+<?php if(get_theme_option('darkonlight')=='1'){?>
+	#footer p, #footer p a, #primary-nav a{color:#555; text-shadow: 0 1px 2px #fafafa;}
+<?php }?>
+</style>
 
 <!-- JavaScripts -->
 
