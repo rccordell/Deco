@@ -13,6 +13,10 @@
 
 <?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
 
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo img('favicon.ico');?>">
+<link rel="apple-touch-icon" href="<?php echo img('apple_touch_icon.png');?>"/>
+
+
 <!-- Get Core stylesheets -->
 <?php 
 queue_css_file('screen');
