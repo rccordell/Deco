@@ -29,15 +29,9 @@
 		
 		</h1>
 
-		<ul class="items-nav navigation" id="secondary-nav">
-			<?php 
-			$navArray = array(
-			array('label'=>'Browse All', 'uri'=>url('items')),
-			array('label'=>'Browse By Tag', 'uri'=>url('items/tags'))
-			);
-			echo nav($navArray);					
-			?>
-		</ul>
+		<div class="items navigation" id="secondary-nav">
+			<?php echo deco_nav();?>
+		</div>
 		
 		<div id="pagination-top" class="pagination"><?php echo pagination_links(); ?></div>
 		
@@ -72,9 +66,10 @@
 
 					<?php if (metadata($item, 'has_tags')): ?>
 					<div class="tags"><p><strong>Tags:</strong>
-					<?php echo tag_string($item, url('items/browse')); ?> </p>
+					<?php echo tag_string('Item'); ?> </p>
 					</div>
-					<?php endif; ?>				
+					<?php endif; ?>	
+												
 				</div>
 				
 				
