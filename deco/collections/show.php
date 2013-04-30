@@ -5,7 +5,8 @@
 
 <div id="primary" class="show">
     <h1><?php echo metadata('Collection',array('Dublin Core','Title')); ?></h1>
-
+    <div id="collection-meta">
+    
     <div id="description" class="element">
         <h2>Description</h2>
         <div class="element-text"><?php echo metadata('Collection',array('Dublin Core','Description')); ?></div>
@@ -21,6 +22,7 @@
 	    echo "<em>This collection has no items</em>";	
     	}?>
     </p>
+    </div>
     
     <div id="collection-items">
     	    <?php

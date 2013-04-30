@@ -1,13 +1,11 @@
 </div><!-- end content -->
 
 <div id="footer">
-
-    <p>&copy; <?php echo date(Y);?> <?php echo html_escape(option('author'));?>
-    <br/>Proudly powered by <a href="http://omeka.org">Omeka</a><?php echo deco_display_theme_credit();?></p>
-
-    <br/><ul class="navigation">
 		<?php echo public_nav_main();?>
-    </ul>
+    
+    <p>&copy; <?php echo date(Y);?> <?php echo html_escape(option('author'));?>
+    <br/>Powered by <a href="http://omeka.org">Omeka</a><?php echo deco_display_theme_credit();?></p>
+
 	
 </div><!-- end footer -->
 </div><!-- end wrap -->

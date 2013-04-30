@@ -5,18 +5,18 @@ echo head(array('title' => $title, 'bodyid' => 'exhibit', 'bodyclass' => 'browse
 <h1><?php echo $title; ?> <?php echo __(': %s', $total_results); ?></h1>
 <?php if (count($exhibits) > 0): ?>
 
-<ul class="items-nav navigation" id="secondary-nav">
+<div class="items-nav navigation" id="secondary-nav">
     <?php echo nav(array(
         array(
-            'label' => __('Browse All'),
+            'label' => __('All'),
             'uri' => url('exhibits')
         ),
         array(
-            'label' => __('Browse by Tag'),
+            'label' => __('Tags'),
             'uri' => url('exhibits/tags')
         )
     )); ?>
-</ul>
+</div>
 
 <div class="pagination"><?php echo pagination_links(); ?></div>
 

@@ -7,11 +7,11 @@ echo head(array('title' => $title, 'bodyid' => 'exhibit', 'bodyclass' => 'tags')
 <ul class="items-nav navigation" id="secondary-nav">
     <?php echo nav(array(
             array(
-                'label' => __('Browse All'),
+                'label' => __('All'),
                 'uri' => url('exhibits/browse')
             ),
             array(
-                'label' => __('Browse by Tag'),
+                'label' => __('Tags'),
                 'uri' => url('exhibits/tags')
             )
         )
