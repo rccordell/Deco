@@ -227,6 +227,33 @@ function deco_homepage_gallery(){
 			</div>			
 <?php
 }
+
+/*
+** Script to resize the video based on desired aspect ratio and browser viewport
+** This basically iterates a separate action for each video (see mh_video_files() loop above),
+** which is not very efficient, but having more than one video per record is probably not very common
+*/
+function deco_video_ResponsifyVideoScript($videoIndex, $aspectRatio='360/640'){
+?>
+	<script>
+	var vidCount=<?php echo $videoIndex; ?>;
+	var aspectRatio=<?php echo $aspectRatio; ?>;
+	for (var i=1;i<=vidCount;i++){
+		var vidID = "#htmlvideo-"+i+"";
+		_V_(vidID).ready(function(i){
+			var myVid = this;
+			function resizeVideoJS(i){
+				var width = document.getElementById(myVid.id).parentElement.offsetWidth;
+				myVid.width(width).height( width * aspectRatio );
+			}
+			resizeVideoJS(i);
+			var $window = jQuery(window);
+			jQuery($window).resize(resizeVideoJS);
+		});
+	}
+	
+	</script>
+<?php
 }
 
 //extends featured exhibit function to include snippet from description and read more link
