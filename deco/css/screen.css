@@ -217,8 +217,8 @@ nav.pagination {
 	padding:8px;
 	background:#ccc;
 	color:#fff;
-	margin:0 3px 0 0;
-	display:inline;
+	margin:3px 3px 0 0;
+	display:inline-block;
 }
 
 .pagination a {
@@ -768,7 +768,8 @@ form#simple-search {
 	text-transform:capitalize;
 	font-size:1.1em;
 	text-decoration:none;
-	padding:.5em 0 .5em 1em;
+	padding:.5em 0 .5em 0;
+	text-align: center;
 	line-height:1.1em;
 	color:#fff;
 }
@@ -1381,6 +1382,12 @@ p.view-items-link {
 	font-size:1em;
 }
 
+#map-links{}
+#map-links h2{line-height: 1.2em;}
+#map-links li{background-color: transparent !important; display: block !important; margin-bottom: auto !important;}
+#map-links li a:link{color: #555 !important;}
+#link_block{background-color: transparent !important;}
+
 @media only screen and (max-width: 40em) {
 
 	.swipe-wrap div.main{
@@ -1411,6 +1418,11 @@ p.view-items-link {
 	#wrap {
 		max-width:90em;
 	}
+
+	#primary-nav a {
+		padding:.5em 0 .5em 1em;
+		text-align: left;
+	}	
 	
 	#home #primary,body.show.item #primary {
 		width:60%;
