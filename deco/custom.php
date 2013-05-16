@@ -183,9 +183,9 @@ function deco_homepage_gallery_items(){
 			    	       $html .= '<div class="main">';
 			    	       		$html .= '<img src="'.$first_img.'">';
 				    	       $html .=  '<div class="caption">';
-				    	       $html .=  '<h3>'.link_to($item,$action,metadata($item,array('Dublin Core', 'Title'))).'</h3>';
+				    	       $html .=  '<h3>'.link_to($item,metadata($item,array('Dublin Core', 'Title'))).'</h3>';
 				    	       $html .=  '<p>'.metadata($item,array('Dublin Core', 'Description'),array('snippet'=>190));
-				    	       $html .=  link_to($item,$action,' ...more').'</p>';
+				    	       $html .=  link_to($item,' ...more').'</p>';
 				    	       $html .= '</div>'; 
 			    	       $html .='</div>';
 	
