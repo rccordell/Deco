@@ -312,6 +312,8 @@ body.show .element-text {
 .item-img {
 }
 
+.mejs-container{min-height: 30px;}
+
 .items-list {
 }
 
