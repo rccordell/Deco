@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="<?php echo get_html_lang(); ?>">
 <head>
+
 <title><?php echo option('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
 
 <!-- Meta -->
@@ -80,6 +81,7 @@ echo $bodyid ? ' id="'.$bodyid.'"' : '';
 echo $bodyclass ? ' class="'.$bodyclass.'"' : '';
 ?>>
 <?php fire_plugin_hook('public_body', array('view'=>$this)); ?>
+
 	<div id="wrap">
 		
 		<div id="mobile-menu-button"><a>Show Menu</a></div>
