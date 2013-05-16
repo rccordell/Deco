@@ -168,7 +168,7 @@ function deco_exhibit_builder_pagination_nav($exhibitPage = null,$summaryPage=fa
 
 
 function deco_homepage_gallery_items(){
-		if (get_theme_option('Featured Image Gallery') == 'yes'){
+		
 			$items = get_random_featured_items(10);
 			if ($items!=null) 
 			{	
@@ -193,10 +193,11 @@ function deco_homepage_gallery_items(){
 			endforeach; 
 			return $html;
 			}
-    	}
+    	
 }
 
 function deco_homepage_gallery(){
+	if (get_theme_option('Featured Image Gallery') == 'yes'){
 ?>			
         	<style type="text/css">
 				.swipe {
@@ -226,6 +227,7 @@ function deco_homepage_gallery(){
 				<button class="next icon-angle-right" onclick="mySwipe.next()"><span>next</span></button>
 			</div>			
 <?php
+}
 }
 
 /*
