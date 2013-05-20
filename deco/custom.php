@@ -168,7 +168,7 @@ function deco_exhibit_builder_pagination_nav($exhibitPage = null,$summaryPage=fa
 
 
 function deco_homepage_gallery_items(){
-		
+
 			$items = get_random_featured_items(10);
 			if ($items!=null) 
 			{	
@@ -179,13 +179,14 @@ function deco_homepage_gallery_items(){
 					$file=item_image('fullsize',$item);
 					$src = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $file , $matches);
 					$first_img = $matches[1][0];
+					$title=metadata($item,array('Dublin Core', 'Title'));
 	
 			    	       $html .= '<div class="main">';
-			    	       		$html .= '<img src="'.$first_img.'">';
+			    	       	   $html .= '<img src="'.$first_img.'">';
 				    	       $html .=  '<div class="caption">';
-				    	       $html .=  '<h3>'.link_to($item,metadata($item,array('Dublin Core', 'Title'))).'</h3>';
+				    	       $html .=  '<h3>'.link_to($item,'show',$title).'</h3>';
 				    	       $html .=  '<p>'.metadata($item,array('Dublin Core', 'Description'),array('snippet'=>190));
-				    	       $html .=  link_to($item,' ...more').'</p>';
+				    	       $html .=  link_to($item,'show',' ...more').'</p>';
 				    	       $html .= '</div>'; 
 			    	       $html .='</div>';
 	
