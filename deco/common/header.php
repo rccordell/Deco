@@ -2,7 +2,8 @@
 <html lang="<?php echo get_html_lang(); ?>">
 <head>
 
-<title><?php echo option('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
+<title><?php 
+echo option('site_title'); echo isset($title) ? ' | ' . $title : ''; ?></title>
 
 <!-- Meta -->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
