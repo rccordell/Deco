@@ -1,21 +1,16 @@
 <?php echo head(array('bodyid'=>'home')); ?> 
     <div id="primary">
-            <!--About-->
-        <div id="site-description">
-            <h2>About</h2> <h3><?php echo option('site_title'); ?></h3>    
-            <?php echo deco_get_about(); ?>
-            
-            
-            <!--uncomment below to add an RSS feed to homepage or wait until next release
-            <h2>External Feed</h2>
-            <? //deco_display_rss('http://jeffersonsnewspaper.org/feed/',1);?>
-            -->
-            
-        </div><!--end About-->
-	
-        <!-- Featured Items slideshow-->
- 			<?php echo deco_homepage_gallery();?> 		
- 		<!-- end featured items -->
+        <!--About text and Featured Slideshow -->
+	      <?php 
+	      if(get_theme_option('slideshowtop')==1){
+	          	echo deco_homepage_gallery();
+	          	echo deco_get_about();            
+		  	}else{
+	          	echo deco_get_about();            
+			  	echo deco_homepage_gallery();				  	
+		  	}
+		  ?> 		
+
 	
         <!-- Featured Exhibit -->
         <div id="featured-exhibits">

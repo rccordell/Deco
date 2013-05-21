@@ -320,7 +320,7 @@ function deco_get_about($about = null)
         'Add some text about your site in theme options. You can use HTML!';
     }
     
-    return $about; 
+    return '<div id="site-description"><h2>About</h2><h3>'.option('site_title').'</h3>'.$about.'</div>'; 
     
 }
 /**
