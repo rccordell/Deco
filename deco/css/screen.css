@@ -214,23 +214,30 @@ nav.pagination {
 }
 
 .pagination li {
-	padding:8px;
 	background:#ccc;
 	color:#fff;
-	margin:3px 3px 0 0;
 	display:inline-block;
+	vertical-align: middle;
+	height: 4em;
 }
+
+.pagination_next,
+.pagination_previous{
+	line-height: 4em;
+}
+.pagination .current {
+	background:#aaa;
+}
+
+.pagination li input{max-width:5em;border:none;padding: 1em;}
 
 .pagination a {
 	color:#fff;
 	text-decoration:none;
 	margin:0;
-	padding:0;
+	padding:1em;
 }
 
-.pagination .current {
-	background:#aaa;
-}
 
 .next {
 }
