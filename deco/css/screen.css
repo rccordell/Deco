@@ -319,7 +319,7 @@ body.show .element-text {
 .item-img {
 }
 
-.mejs-container{min-height: 30px;}
+.mejs-container{min-height: 30px;margin-bottom: 1em;}
 
 .items-list {
 }
