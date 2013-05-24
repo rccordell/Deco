@@ -100,10 +100,10 @@ echo $bodyclass ? ' class="'.$bodyclass.'"' : '';
 		<div id="site-title">
 	
 			<?php if(get_theme_option('logo_upload')){
-				$logo= '<img alt="'.option('site_title').': '.deco_get_tagline().'" src="'.WEB_ROOT.'/files/theme_uploads/'.get_theme_option('logo_upload').'" style="margin:0 auto;max-width:100%;">';
+				$logo= '<img alt="" src="'.WEB_ROOT.'/files/theme_uploads/'.get_theme_option('logo_upload').'" style="margin:0 auto;max-width:100%;">';
 				echo link_to_home_page($logo);
 				if(get_theme_option('hide_header_text')){
-						$visibility='style="visibility:hidden;height:0;" ';
+						$visibility='style="position: absolute; left: -999em;" ';
 					}else{
 						$visibility='';
 					}
