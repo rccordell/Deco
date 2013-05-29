@@ -92,13 +92,14 @@ echo $bodyclass ? ' class="'.$bodyclass.'"' : '';
 				<?php echo public_nav_main(); ?>
 			<!-- search --> 
 			<div id="search-container">
-			    <?php echo bp_simple_search(); ?>
+                <?php echo search_form(); ?>
 			    <?php echo link_to_item_search('Advanced Search'); ?>
 			</div>
 		</div><!-- end primary-nav -->
+		
 		<div id="header">
 		<div id="site-title">
-	
+
 			<?php if(get_theme_option('logo_upload')){
 				$logo= '<img alt="" src="'.WEB_ROOT.'/files/theme_uploads/'.get_theme_option('logo_upload').'" style="margin:0 auto;max-width:100%;">';
 				echo link_to_home_page($logo);

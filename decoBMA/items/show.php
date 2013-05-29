@@ -118,7 +118,8 @@
     	<?php echo all_element_texts($item); ?>
     	
 	<!-- all other plugins-->
-	<?php fire_plugin_hook('public_items_show', array('item' => $item, 'view'=> $this)); ?>  	
+<div><?php echo get_specific_plugin_hook_output('Geolocation' , 'public_items_show' , array('item' => $item, 'view'=> $this)); ?></div>
+<?php echo get_specific_plugin_hook_output('SocialBookmarking' , 'public_items_show', array('item' => $item, 'view' => $this)); ?><br /><br />
 	
 	</div><!-- end item-metadata -->
 
@@ -126,6 +127,7 @@
 	
 </div><!-- end primary -->
 <div id="sidebar">	
+<div><?php echo get_specific_plugin_hook_output('SocialBookmarking' , 'public_items_show', array('item' => $item, 'view' => $this)); ?></div><br /><br />
 
 <!-- download links -->
 	<div id="itemfiles" class="element">
@@ -165,6 +167,7 @@
     	<h3>Citation</h3>
     	<div class="element-text"><?php echo metadata('Item','Citation',array('no_escape' => true)); ?></div>
 	</div>
+
 
 </div> <!-- end sidebar-->
 

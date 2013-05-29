@@ -4,7 +4,7 @@ function deco_body_bg(){
 	if(get_theme_option('bg_img')!='none'){
 		//There's not currently a good reason to separate CSS and IMG options, but...
 	
-		$img=array('paperlight','greenlit','fabric_grey','graph','grungewood','whitewood','wood');
+		$img=array('paperlight','bluelight','greenlit','fabric_grey','graph','grungewood','whitewood','wood');
 		$css=array('tartan','madras','blueprint');
 		
 		if(array_search(get_theme_option('bg_img'),$img)!==false){
@@ -320,7 +320,8 @@ function deco_get_about($about = null)
         'Add some text about your site in theme options. You can use HTML!';
     }
     
-    return '<div id="site-description"><h2>About</h2><h3>'.option('site_title').'</h3>'.$about.'</div>'; 
+        return '<div id="site-description"><h2>About</h2><h3>'.option('site_title').'</h3>'.$about.'</div>'; 
+
     
 }
 /**

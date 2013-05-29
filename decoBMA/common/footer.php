@@ -57,7 +57,7 @@
 
 
     // resizable site title
-    jQuery("#site-title").fitText(2, { minFontSize: '25px', maxFontSize: '45px' });
+    //jQuery("#site-title").fitText(2, { minFontSize: '25px', maxFontSize: '45px' });
  	jQuery("body#home #content h2").fitText(0, { minFontSize: '23px', maxFontSize: '27px' });
 
 	// create slideshow on home

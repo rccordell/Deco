@@ -1,6 +1,6 @@
 <?php echo head(array('bodyid'=>'home')); ?> 
     <div id="primary">
-        <!--About text and Featured Slideshow -->
+             <!--About text and Featured Slideshow -->
 	      <?php 
 	      if(get_theme_option('slideshowtop')==1){
 	          	echo deco_homepage_gallery();
@@ -10,7 +10,6 @@
 			  	echo deco_homepage_gallery();				  	
 		  	}
 		  ?> 		
-
 	
         <!-- Featured Exhibit -->
         <div id="featured-exhibits">
